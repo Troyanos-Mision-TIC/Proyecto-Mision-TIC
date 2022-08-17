@@ -1,3 +1,5 @@
 # Proyecto-Misi-n-TIC---Troyanos
 
-# integrante 1 : Esteban Muñoz Galeano
+## Autores
+ - [@maolok](https://github.com/maolok) ─ Esteban Muñoz Galeano
+ - [@Ji2mys](https://github.com/Ji2mys) ─ Jimmy Sánchez López
