@@ -6,7 +6,7 @@ public class Empresa {
     private long telefono;
     private long NIT;
 
-    public Empresa(String nombre, String direccion, long teléfono, long NIT) {
+    public Empresa(String nombre, String direccion, long telefono, long NIT) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
