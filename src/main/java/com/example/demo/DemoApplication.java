@@ -48,7 +48,12 @@ public class DemoApplication {
 			System.out.println("<<----------------------------------------------->>");
 			counter++;
 		}
+<<<<<<< HEAD
 		ArrayList<Empleado> employee  = new ArrayList<>();
+=======
+                
+        ArrayList<Empleado> employee  = new ArrayList<>();
+>>>>>>> 1401b6c8a2abb4c40cb5d954f0fbf662b81575b3
                 
         Empleado empleado = new Empleado("Daniel", "deyproj@hotmail.com", emp, "supervisor");
         Empleado empleado2 = new Empleado("Juan", "juan@hotmail.com", emp, "gerente");
@@ -71,6 +76,7 @@ public class DemoApplication {
 			e.setRol("asesor");
                         
 			System.out.println("<<**************************************************>>");
+<<<<<<< HEAD
 
 			System.out.println("Employee parameters No."+counter2+" Editados");
 			System.out.println("Nombre: "+e.getNombre());
@@ -83,5 +89,16 @@ public class DemoApplication {
 
 
 	}
+=======
+>>>>>>> 1401b6c8a2abb4c40cb5d954f0fbf662b81575b3
 
+			System.out.println("Employee parameters No."+counter2+" Editados");
+			System.out.println("Nombre: "+e.getNombre());
+			System.out.println("Correo:"+e.getCorreo());
+			System.out.println("Empresa:"+(e.getEmpresa()).getNombre());
+			System.out.println("Rol: "+e.getRol());
+			System.out.println("<<----------------------------------------------->>");
+			counter2++;
+		}            
+	}
 }
