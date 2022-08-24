@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,39 @@ public class DemoApplication {
 			System.out.println("<<----------------------------------------------->>");
 			counter++;
 		}
-	}
 
+		ArrayList<Empleado> employee  = new ArrayList<>();
+                
+        Empleado empleado = new Empleado("Daniel", "deyproj@hotmail.com", emp, "supervisor");
+        Empleado empleado2 = new Empleado("Juan", "juan@hotmail.com", emp, "gerente");
+        employee.add(empleado);
+        employee.add(empleado2);
+                
+                
+                int counter2 = 1;
+		for(Empleado e : employee){
+			System.out.println("<<----------------------------------------------->>");
+			System.out.println("Employee parameters No."+ counter2);
+			System.out.println("Nombre: "+e.getNombre());
+			System.out.println("Correo:"+e.getCorreo());
+			System.out.println("Empresa:"+(e.getEmpresa()).getNombre());
+			System.out.println("Rol: "+e.getRol());
+                        
+            e.setNombre("Alejandro");
+			e.setCorreo("cambio@hotmail.com");
+			e.setEmpresa(emp2);
+			e.setRol("asesor");
+                        
+			System.out.println("<<**************************************************>>");
+
+
+			System.out.println("Employee parameters No."+counter2+" Editados");
+			System.out.println("Nombre: "+e.getNombre());
+			System.out.println("Correo:"+e.getCorreo());
+			System.out.println("Empresa:"+(e.getEmpresa()).getNombre());
+			System.out.println("Rol: "+e.getRol());
+			System.out.println("<<----------------------------------------------->>");
+			counter2++;
+		}            
+	}
 }

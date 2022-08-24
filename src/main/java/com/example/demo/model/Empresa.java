@@ -43,5 +43,5 @@ public class Empresa {
 
     public void setNIT(long NIT) {
         this.NIT = NIT;
-    }
+    } 
 }
