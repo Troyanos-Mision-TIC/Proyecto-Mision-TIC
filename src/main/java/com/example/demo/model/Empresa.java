@@ -4,13 +4,13 @@ public class Empresa {
     private String nombre;
     private String direccion;
     private long telefono;
-    private long NIT;
+    private long nit;
 
-    public Empresa(String nombre, String direccion, long telefono, long NIT) {
+    public Empresa(String nombre, String direccion, long telefono, long nit) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.NIT = NIT;
+        this.nit = nit;
     }
 
     public String getNombre() {
@@ -37,11 +37,11 @@ public class Empresa {
         this.telefono = telefono;
     }
 
-    public long getNIT() {
-        return NIT;
+    public long getNit() {
+        return nit;
     }
 
-    public void setNIT(long NIT) {
-        this.NIT = NIT;
-    } 
+    public void setNit(long nit) {
+        this.nit = nit;
+    }
 }
