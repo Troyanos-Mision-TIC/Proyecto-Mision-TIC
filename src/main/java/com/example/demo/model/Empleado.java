@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 public class Empleado {
-    
 
     private String nombre;
     private String correo;
@@ -49,6 +48,6 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "Empleado{" + "nombre=" + nombre + ", correo=" + correo + ", empresa=" + empresa + ", rol=" + rol + '}';
+        return "Empleado{nombre=" + nombre + ", correo=" + correo + ", empresa=" + empresa + ", rol=" + rol + "}";
     }
 }

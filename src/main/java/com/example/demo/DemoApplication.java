@@ -8,79 +8,75 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class DemoApplication {
-	private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+    private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
-		System.out.println("Hello World");
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
 
-		ArrayList<Empresa> enterprise  = new ArrayList<>();
+        ArrayList<Empresa> empresas = new ArrayList<>();
 
-		Empresa emp =  new Empresa("testEnterprise" , "Street 1 # 20-15 Cali", 3214567890L, 1568453218L);
-		Empresa emp2 =  new Empresa("testEnterprise2" , "Street 2 # 20-15 Cali", 2123562354L, 546543211L);
-		enterprise.add(emp);
-		enterprise.add(emp2);
+        Empresa empresa1 = new Empresa("testEnterprise", "Street 1 # 20-15 Cali", 3214567890L, 1568453218L);
+        Empresa empresa2 = new Empresa("testEnterprise2", "Street 2 # 20-15 Cali", 2123562354L, 546543211L);
+        empresas.add(empresa1);
+        empresas.add(empresa2);
 
-		int counter = 1;
-		for(Empresa e : enterprise){
-			System.out.println("<<----------------------------------------------->>");
-			System.out.println("Enterprise parameters No."+ counter);
-			System.out.println("Nombre: "+e.getNombre());
-			System.out.println("Dirección:"+e.getDireccion());
-			System.out.println("Telefono: "+e.getTelefono());
-			System.out.println("NIT: "+e.getNIT());
+        int contador1 = 1;
+        for (Empresa empresa : empresas) {
+            System.out.println("<<----------------------------------------------->>");
+            System.out.println("Enterprise parameters No." + contador1);
+            System.out.println("Nombre: " + empresa.getNombre());
+            System.out.println("Dirección:" + empresa.getDireccion());
+            System.out.println("Teléfono: " + empresa.getTelefono());
+            System.out.println("NIT: " + empresa.getNit());
 
-			e.setDireccion("Calle 5 No. 30 -25  Medellin");
-			e.setTelefono(3201478523L);
-			e.setNIT(546543212L);
-			e.setNombre("EnterpriseProdu");
-			System.out.println("<<**************************************************>>");
+            empresa.setDireccion("Calle 5 No. 30 -25  Medellin");
+            empresa.setTelefono(3201478523L);
+            empresa.setNIT(546543212L);
+            empresa.setNombre("EnterpriseProdu");
+            System.out.println("<<**************************************************>>");
 
-			System.out.println("Enterprise parameters No."+counter+" Editados");
-			System.out.println("Nombre: "+e.getNombre());
-			System.out.println("Dirección:"+e.getDireccion());
-			System.out.println("Telefono: "+e.getTelefono());
-			System.out.println("NIT: "+e.getNIT());
-			System.out.println("<<----------------------------------------------->>");
-			counter++;
-		}
+            System.out.println("Enterprise parameters No." + contador1 + " Editados");
+            System.out.println("Nombre: " + empresa.getNombre());
+            System.out.println("Dirección:" + empresa.getDireccion());
+            System.out.println("Teléfono: " + empresa.getTelefono());
+            System.out.println("NIT: " + empresa.getNit());
+            System.out.println("<<----------------------------------------------->>");
+            contador1++;
+        }
 
-		ArrayList<Empleado> employee  = new ArrayList<>();
-                
-        Empleado empleado = new Empleado("Daniel", "deyproj@hotmail.com", emp, "supervisor");
-        Empleado empleado2 = new Empleado("Juan", "juan@hotmail.com", emp, "gerente");
-        employee.add(empleado);
-        employee.add(empleado2);
-                
-                
-                int counter2 = 1;
-		for(Empleado e : employee){
-			System.out.println("<<----------------------------------------------->>");
-			System.out.println("Employee parameters No."+ counter2);
-			System.out.println("Nombre: "+e.getNombre());
-			System.out.println("Correo:"+e.getCorreo());
-			System.out.println("Empresa:"+(e.getEmpresa()).getNombre());
-			System.out.println("Rol: "+e.getRol());
-                        
-            e.setNombre("Alejandro");
-			e.setCorreo("cambio@hotmail.com");
-			e.setEmpresa(emp2);
-			e.setRol("asesor");
-                        
-			System.out.println("<<**************************************************>>");
+        ArrayList<Empleado> empleados = new ArrayList<>();
 
+        Empleado empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", empresa1, "supervisor");
+        Empleado empleado2 = new Empleado("Juan", "juan@hotmail.com", empresa1, "gerente");
+        empleados.add(empleado1);
+        empleados.add(empleado2);
 
-			System.out.println("Employee parameters No."+counter2+" Editados");
-			System.out.println("Nombre: "+e.getNombre());
-			System.out.println("Correo:"+e.getCorreo());
-			System.out.println("Empresa:"+(e.getEmpresa()).getNombre());
-			System.out.println("Rol: "+e.getRol());
-			System.out.println("<<----------------------------------------------->>");
-			counter2++;
-		}            
-	}
+        int contador2 = 1;
+        for (Empleado empleado : empleados) {
+            System.out.println("<<----------------------------------------------->>");
+            System.out.println("Employee parameters No." + contador2);
+            System.out.println("Nombre: " + empleado.getNombre());
+            System.out.println("Correo:" + empleado.getCorreo());
+            System.out.println("Empresa:" + (empleado.getEmpresa()).getNombre());
+            System.out.println("Rol: " + empleado.getRol());
+
+            empleado.setNombre("Alejandro");
+            empleado.setCorreo("cambio@hotmail.com");
+            empleado.setEmpresa(empresa2);
+            empleado.setRol("asesor");
+
+            System.out.println("<<**************************************************>>");
+
+            System.out.println("Employee parameters No." + contador2 + " Editados");
+            System.out.println("Nombre: " + empleado.getNombre());
+            System.out.println("Correo:" + empleado.getCorreo());
+            System.out.println("Empresa:" + (empleado.getEmpresa()).getNombre());
+            System.out.println("Rol: " + empleado.getRol());
+            System.out.println("<<----------------------------------------------->>");
+            contador2++;
+        }
+    }
 }
