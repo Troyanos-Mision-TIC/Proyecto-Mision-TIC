@@ -34,7 +34,7 @@ public class DemoApplication {
 
             empresa.setDireccion("Calle 5 No. 30 -25  Medellin");
             empresa.setTelefono(3201478523L);
-            empresa.setNIT(546543212L);
+            empresa.setNit(546543212L);
             empresa.setNombre("EnterpriseProdu");
             System.out.println("<<**************************************************>>");
 
