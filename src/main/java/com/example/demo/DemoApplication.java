@@ -16,7 +16,7 @@ public class DemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
 
-        ArrayList<Empresa> empresas = new ArrayList<>();
+        /*ArrayList<Empresa> empresas = new ArrayList<>();
 
         Empresa empresa1 = new Empresa("testEnterprise", "Street 1 # 20-15 Cali", 3214567890L, 1568453218L);
         Empresa empresa2 = new Empresa("testEnterprise2", "Street 2 # 20-15 Cali", 2123562354L, 546543211L);
@@ -77,6 +77,6 @@ public class DemoApplication {
             System.out.println("Rol: " + empleado.getRol());
             System.out.println("<<----------------------------------------------->>");
             contador2++;
-        }
+        }*/
     }
 }
