@@ -12,13 +12,13 @@ public class EmpleadoService {
     ArrayList<Empleado> empleados;
 
     public EmpleadoService(){
+        this.empleados = new ArrayList<>();
         this.empresa1 = new Empresa("testEnterprise", "Street 1 # 20-15 Cali", 3214567890L, 1568453218L);
         this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", empresa1, "supervisor");
         this.empleado2 = new Empleado("Juan", "juan@hotmail.com", empresa1, "gerente");
 
         empleados.add(empleado1);
         empleados.add(empleado1);
-
     }
 
     public ArrayList getEmpleados() {
