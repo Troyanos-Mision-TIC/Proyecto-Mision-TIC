@@ -18,7 +18,7 @@ public class EmpleadoService {
         this.empleado2 = new Empleado("Juan", "juan@hotmail.com", empresa1, "gerente");
 
         empleados.add(empleado1);
-        empleados.add(empleado1);
+        empleados.add(empleado2);
     }
 
     public ArrayList getEmpleados() {
