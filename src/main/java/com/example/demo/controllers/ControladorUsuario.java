@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
+import com.example.demo.services.EmpleadoService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,34 @@ public class ControladorUsuario {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Empleado> postEmpleado(@RequestBody Empleado empleado) {
-        return new ResponseEntity<>(empleadoService.addEmpleado(empleado), HttpStatus.OK);
+    public ResponseEntity<Empleado> postEmpleado(@RequestBody Map<Object, Object> fields) {
+        Empleado nuevoEmpleado = new Empleado();
+        try {
+            fields.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(Empleado.class, (String) key);
+                if (field != null) {
+                    field.setAccessible(true);
+                    if (key.equals("empresa")) {
+                        Empresa empresa = new Empresa("EnterCom", "Street 1-1", 151561561L, 156156L);
+                        ReflectionUtils.setField(field, nuevoEmpleado, empresa);
+                    } else {
+                        ReflectionUtils.setField(field, nuevoEmpleado, value);
+                    }
+                }
+            });
+            return new ResponseEntity<>(empleadoService.addEmpleado(nuevoEmpleado), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Empleado> getEmpleadoPorId(@PathVariable Integer id) {
-        return new ResponseEntity<>(empleadoService.getEmpleado(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(empleadoService.getEmpleado(id), HttpStatus.OK);
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PatchMapping("/users/{id}")
@@ -51,6 +73,8 @@ public class ControladorUsuario {
                 }
             });
             return new ResponseEntity<>(empleadoService.saveEmpleado(id, nuevoEmpleado), HttpStatus.OK);
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -58,6 +82,10 @@ public class ControladorUsuario {
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Empleado> deleteEmpleado(@PathVariable Integer id) {
-        return new ResponseEntity<>(empleadoService.removeEmpleado(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(empleadoService.removeEmpleado(id), HttpStatus.OK);
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
