@@ -2,9 +2,11 @@ package com.example.demo.services;
 
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+@Service
 public class EmpleadoService {
     Empleado empleado1;
     Empleado empleado2;
