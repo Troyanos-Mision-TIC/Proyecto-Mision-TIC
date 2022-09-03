@@ -51,12 +51,12 @@ public class EmpresaService {
         }
     }
 
-    public Boolean update(Empresa enterprise){
+    public Boolean update(long nit, Empresa enterprise){
         //Service Implement
         for(Empresa enterpr: getStorageEnterprises()){
-            if(enterpr.getNit() == enterprise.getNit()){
+            if(enterpr.getNit() == nit){
                 enterpr = enterprise;
-                 return true;
+                return true;
             }
         }
         return false;
