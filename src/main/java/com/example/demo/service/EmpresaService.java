@@ -51,15 +51,20 @@ public class EmpresaService {
         }
     }
 
-    public Boolean update(long nit, Empresa enterprise){
+    public Empresa update(Empresa actual, Empresa enterprise){
         //Service Implement
         for(Empresa enterpr: getStorageEnterprises()){
-            if(enterpr.getNit() == nit){
-                enterpr = enterprise;
-                return true;
+            if(enterpr.getNit() == actual.getNit()){
+                if(enterprise.getNombre() != null && !enterprise.getNombre().isEmpty()){
+                    enterpr.setNombre(enterprise.getNombre());}
+                if(enterprise.getTelefono() != 0){
+                    enterpr.setTelefono(enterprise.getTelefono());}
+                if(enterprise.getDireccion() != null && !enterprise.getDireccion().isEmpty()){
+                    enterpr.setDireccion(enterprise.getDireccion());}
+                return enterpr;
             }
         }
-        return false;
+        return null;
     }
 
     public Boolean deleteById(long id){
