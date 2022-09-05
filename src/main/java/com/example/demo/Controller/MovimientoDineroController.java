@@ -22,12 +22,12 @@ public class MovimientoDineroController {
 
     @PostMapping(value = "/MovimientoDinero", consumes = "application/json", produces = "application/json")
     public MovimientoDinero creatMovimientoDinero(@RequestBody MovimientoDinero movimientoDinero){
-        return movimientoDinero;
+        return ResponseEntity(HttpStatus.CREATED);
     }
 
     @PatchMapping("/MovimientoDinero/{id}/{monto}")
     public MovimientoDinero uptadeMovimientoDinero(@PathVariable("id") Long id, @PathVariable("monto") Double monto){
-        return MovimientoDineroService.updateMovimientoDinero(id, monto);
+        return ResponseEntity(HttpStatus.ACCEPTED);
 
     @DeleteMapping("/MovimientoDinero/{id}/")
     public ResponseEntity deleteMovimientoDinero(@PathVariable("id") Long id){
