@@ -13,78 +13,39 @@ public class EmpresaService {
 
     @PostConstruct
     private void EmpresaService() {
-        Empresa firstEnterprise = new Empresa("FirstEnterprise","Cali - Valle",123165423L,321654789L);
+        Empresa firstEnterprise = new Empresa("FirstEnterprise","Cali - Valle",123165423L,321654789);
         storageEnterprises = new ArrayList<>();
         storageEnterprises.add(firstEnterprise);
     }
 
     public ArrayList<Empresa> findAll(){
-        ArrayList<Empresa> enterprises = new ArrayList<>();
-        //Service Implement
-        enterprises = getStorageEnterprises();
-
-        return enterprises;
+        return getStorageEnterprises();
     }
 
-    public Empresa findById(long id){
-        Empresa enterprises = null;
-        //Service Implement
-        for(Empresa enterpr: getStorageEnterprises()){
-            if(enterpr.getNit() == id){
-                enterprises = enterpr;
-                break;
-            }
-        }
-        return enterprises;
+    public Empresa findById(int id){
+        return storageEnterprises.get(id);
     }
 
-    public Boolean save(Empresa enterprise){
-        //Service Implement
-        int val1 = getStorageEnterprises().size();
-        getStorageEnterprises().add(enterprise);
-        int val2 = getStorageEnterprises().size();
-
-        if(val2 > val1){
+    public Boolean append(Empresa enterprise){
+        try {
+            getStorageEnterprises().add(enterprise);
             return true;
-        }else{
+        }catch (Exception e){
             return false;
         }
     }
 
-    public Empresa update(Empresa actual, Empresa enterprise){
-        //Service Implement
-        for(Empresa enterpr: getStorageEnterprises()){
-            if(enterpr.getNit() == actual.getNit()){
-                if(enterprise.getNombre() != null && !enterprise.getNombre().isEmpty()){
-                    enterpr.setNombre(enterprise.getNombre());}
-                if(enterprise.getTelefono() != 0){
-                    enterpr.setTelefono(enterprise.getTelefono());}
-                if(enterprise.getDireccion() != null && !enterprise.getDireccion().isEmpty()){
-                    enterpr.setDireccion(enterprise.getDireccion());}
-                return enterpr;
-            }
-        }
-        return null;
+    public Empresa save(Integer id, Empresa enterprise){
+        return storageEnterprises.set(id, enterprise);
     }
 
-    public Boolean deleteById(long id){
-        //Service Implement
-        for(Empresa enterpr: getStorageEnterprises()){
-            if(enterpr.getNit() == id){
-                getStorageEnterprises().remove(enterpr);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Boolean deleteAll(){
-        //Service Implement
-        if(!getStorageEnterprises().isEmpty()){
-            getStorageEnterprises().clear();
+    public Boolean deleteById(int id){
+        try{
+            getStorageEnterprises().remove(id);
             return true;
+        }catch (Exception e){
+            return false;
         }
-        return false;
     }
 
     public ArrayList<Empresa>  getStorageEnterprises() {
