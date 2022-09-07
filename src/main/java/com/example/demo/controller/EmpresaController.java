@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class EmpresaController {
 
     private static final  org.slf4j.Logger logger = LoggerFactory.getLogger(EmpresaController.class);
