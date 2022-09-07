@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import com.example.demo.model.Empresa;
-import com.example.demo.service.EmpresaService;
+import com.example.demo.services.EmpresaService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
