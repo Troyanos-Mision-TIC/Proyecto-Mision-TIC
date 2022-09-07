@@ -34,13 +34,13 @@ public class MovimientoDineroService {
     
     }
     
-    public MovimientoDinero ConsultarMovimiento(int idmovimiento){
+    public MovimientoDinero consultarMovimiento(int idmovimiento){
         
         return movimientos.get(idmovimiento);
     
     }
     
-    public MovimientoDinero CrearMovimiento(MovimientoDinero Movimiento){
+    public MovimientoDinero crearMovimiento(MovimientoDinero Movimiento){
         
         this.movimientos.add(Movimiento);
         return movimientos.get(movimientos.size()-1);
@@ -48,12 +48,13 @@ public class MovimientoDineroService {
     
     }
     
-    public MovimientoDinero EditarMovimiento(int idmovimiento,MovimientoDinero Movimiento){
+    public MovimientoDinero editarMovimiento(int idmovimiento,MovimientoDinero Movimiento){
         
         this.movimientos.set(idmovimiento, Movimiento);
         return movimientos.get(idmovimiento);
     }
-    public MovimientoDinero EliminarMovimiento(int idmovimiento){
+    
+    public MovimientoDinero eliminarMovimiento(int idmovimiento){
         
         return this.movimientos.remove(idmovimiento);
     
