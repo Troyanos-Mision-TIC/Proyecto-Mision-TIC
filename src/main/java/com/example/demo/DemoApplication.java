@@ -86,6 +86,7 @@ public class DemoApplication {
     //consultar movimiento
     MovimientoDineroService movimiento = new MovimientoDineroService();
     System.out.println("Movimiento :"+movimiento.consultarMovimiento(0).getMonto());
+
     
     
     //consultar movimientos
@@ -101,6 +102,7 @@ public class DemoApplication {
     //nuevo movimiento
     MovimientoDinero movimientonuevo = new MovimientoDinero(2000,"Egreso",empleado1);
     movimiento.crearMovimiento(movimientonuevo);
+
     
     //Editar Movimiento
     
