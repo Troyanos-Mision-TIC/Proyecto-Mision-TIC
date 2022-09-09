@@ -28,14 +28,10 @@ public class EmpresaController {
 
     @GetMapping("/enterprises")
     public ResponseEntity<List<Empresa>> getAllEmpresas(@RequestParam(required = false) String title) {
-        ArrayList<Empresa> empresa = new ArrayList<>();
-        logger.info("Try to find Enterprises");
-        empresa = empresaService.findAll();
-
-        if (!empresa.isEmpty()) {
-            logger.info("successful task");
-            return new ResponseEntity<>(empresa, HttpStatus.OK);
-        } else {
+        try{
+            logger.info("Try to find Enterprises");
+            return new ResponseEntity<>(empresaService.findAll(), HttpStatus.OK);
+        } catch (Exception e){
             logger.error("Wrong task");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -43,29 +39,22 @@ public class EmpresaController {
 
     @GetMapping("/enterprises/{id}")
     public ResponseEntity<Empresa> getEmpresaById(@PathVariable("id") Integer id) {
-        Empresa enterprise = null;
-        logger.info("Try to find Enterprises by Id");
-        enterprise = empresaService.findById(id);
-
-        if (enterprise != null) {
-            logger.info("successful task");
-            return new ResponseEntity(enterprise, HttpStatus.OK);
-        } else {
-            logger.error("Wrong task");
+        try{
+            logger.info("Try to find Enterprises by Id");
+            return new ResponseEntity(empresaService.findById(id), HttpStatus.OK);
+        }catch (IndexOutOfBoundsException e){
+            logger.error("Wrong task", e);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/enterprises")
     public ResponseEntity<Empresa> createEmpresa(@RequestBody Empresa empresa) {
-        logger.info("Try to create Enterprise");
-        Boolean valor = empresaService.append(empresa);
-
-        if (valor) {
-            logger.info("successful task");
-            return new ResponseEntity<>(empresa, HttpStatus.CREATED);
-        } else {
-            logger.error("Wrong task");
+        try{
+            logger.info("Try to create Enterprise");
+            return new ResponseEntity<>(empresaService.append(empresa), HttpStatus.CREATED);
+        } catch (Exception e){
+            logger.error("Can't created enterprise",e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -73,8 +62,8 @@ public class EmpresaController {
     @PatchMapping("/enterprises/{id}")
     ResponseEntity<Empresa> patchEmpresa(@PathVariable("id") int id,@RequestBody Map<Object, Object> fields) {
        try{
-           logger.info("Try to edit Enterprise");
-           Empresa emp = empresaService.findById(id);
+            logger.info("Try to edit Enterprise");
+            Empresa emp = empresaService.findById(id);
             fields.forEach((key, value) ->{
                 Field field = ReflectionUtils.findField(Empresa.class, (String) key);
                 field.setAccessible(true);
@@ -88,15 +77,12 @@ public class EmpresaController {
     }
 
     @DeleteMapping("/enterprises/{id}")
-    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") int id) {
-        logger.info("Try to delete Enterprise by Id");
-        Boolean valor = empresaService.deleteById(id);
-
-        if (valor) {
-            logger.info("successful task");
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            logger.error("Wrong task");
+    public ResponseEntity<Empresa> deleteTutorial(@PathVariable("id") int id) {
+       try{
+            logger.info("Try to delete Enterprise by Id");
+            return new ResponseEntity<>(empresaService.deleteById(id), HttpStatus.OK);
+        } catch (IndexOutOfBoundsException e){
+            logger.error("Can't delete enterprise ", e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

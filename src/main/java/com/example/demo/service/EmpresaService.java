@@ -26,12 +26,12 @@ public class EmpresaService {
         return storageEnterprises.get(id);
     }
 
-    public Boolean append(Empresa enterprise){
+    public Empresa append(Empresa enterprise){
         try {
             getStorageEnterprises().add(enterprise);
-            return true;
+            return enterprise;
         }catch (Exception e){
-            return false;
+            return null;
         }
     }
 
@@ -39,12 +39,13 @@ public class EmpresaService {
         return storageEnterprises.set(id, enterprise);
     }
 
-    public Boolean deleteById(int id){
+    public Empresa deleteById(int id){
         try{
+            Empresa emp = getStorageEnterprises().get(id);
             getStorageEnterprises().remove(id);
-            return true;
+            return emp;
         }catch (Exception e){
-            return false;
+            return null;
         }
     }
 
