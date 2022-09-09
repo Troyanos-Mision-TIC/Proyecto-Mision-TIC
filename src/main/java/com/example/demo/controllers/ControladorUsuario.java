@@ -26,25 +26,8 @@ public class ControladorUsuario {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Empleado> postEmpleado(@RequestBody Map<Object, Object> fields) {
-        Empleado nuevoEmpleado = new Empleado();
-        try {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Empleado.class, (String) key);
-                if (field != null) {
-                    field.setAccessible(true);
-                    if (key.equals("empresa")) {
-                        Empresa empresa = new Empresa("EnterCom", "Street 1-1", 151561561L, 156156L);
-                        ReflectionUtils.setField(field, nuevoEmpleado, empresa);
-                    } else {
-                        ReflectionUtils.setField(field, nuevoEmpleado, value);
-                    }
-                }
-            });
-            return new ResponseEntity<>(empleadoService.addEmpleado(nuevoEmpleado), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Empleado> postEmpleado(@RequestBody Empleado newEmployee) {
+        return new ResponseEntity<>(empleadoService.addEmpleado(newEmployee), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
