@@ -4,8 +4,6 @@ import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
 import com.example.demo.model.MovimientoDinero;
 import com.example.demo.services.MovimientoDineroService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,8 +11,6 @@ import java.util.ArrayList;
 
 @SpringBootApplication
 public class DemoApplication {
-    private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
-
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
 
@@ -86,34 +82,24 @@ public class DemoApplication {
     //consultar movimiento
     MovimientoDineroService movimiento = new MovimientoDineroService();
     System.out.println("Movimiento :"+movimiento.consultarMovimiento(0).getMonto());
-
-    
     
     //consultar movimientos
-    for(MovimientoDinero mov : movimiento.consultarTodosMovimientos()){
-        
+    for(MovimientoDinero mov : movimiento.consultarTodosMovimientos()) {
         System.out.println("RESPONSABLE:"+mov.getUsuarioEncargado().getNombre());
         System.out.println("CONCEPTO:"+mov.getConcepto());
         System.out.println("VALOR:"+mov.getMonto());
         System.out.println("<<----------------------------------------------->>");
-   
     }
     
     //nuevo movimiento
     MovimientoDinero movimientonuevo = new MovimientoDinero(2000,"Egreso",empleado1);
     movimiento.crearMovimiento(movimientonuevo);
 
-    
     //Editar Movimiento
-    
     movimientonuevo.setMonto(12500);
-    movimiento.editarMovimiento(2, movimientonuevo);
-    
-    
+    movimiento.guardarMovimiento(2, movimientonuevo);
+
     //Borrar Movimiento
-    
     movimiento.eliminarMovimiento(2);
-     
-     
     }
 }
