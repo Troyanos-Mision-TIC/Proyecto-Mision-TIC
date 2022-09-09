@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 import com.example.demo.model.Empleado;
 import com.example.demo.model.MovimientoDinero;
 import com.example.demo.services.MovimientoDineroService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -13,17 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class MovimientosController {
+public class MovimientoDineroController {
+    @Autowired
+    private MovimientoDineroService movimientoDineroService;
 
+    public MovimientoDineroController (MovimientoDineroService movimientoDineroService) {
+        this.movimientoDineroService = movimientoDineroService;
+    }
     @GetMapping("/MovimientosDinero")
     public ResponseEntity<List<MovimientoDinero>> getAllMovimientoDinero(){
-        return new ResponseEntity<>(MovimientoDineroService.getAllMovimientos(), HttpStatus.OK);
+        return new ResponseEntity<>(movimientoDineroService.getAllMovimientos(), HttpStatus.OK);
     }
 
     @GetMapping("/MovimientosDinero/{id}/")
     public ResponseEntity<MovimientoDinero> getMovimientoDineroById(@PathVariable("id") Integer id){
         try {
-            return new ResponseEntity<>(MovimientoDineroService.getMovimiento(id), HttpStatus.OK);
+            return new ResponseEntity<>(movimientoDineroService.getMovimiento(id), HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -45,7 +51,7 @@ public class MovimientosController {
                     }
                 }
             });
-            return new ResponseEntity<>(MovimientoDineroService.createMovimiento(nuevoMovimiento), HttpStatus.OK);
+            return new ResponseEntity<>(movimientoDineroService.createMovimiento(nuevoMovimiento), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -54,7 +60,7 @@ public class MovimientosController {
     @DeleteMapping("/MovimientosDinero/{id}")
     public ResponseEntity<MovimientoDinero> deleteMovimiento(@PathVariable("id") Integer id) {
         try {
-            return new ResponseEntity<>(MovimientoDineroService.removeMovimiento(id), HttpStatus.OK);
+            return new ResponseEntity<>(movimientoDineroService.removeMovimiento(id), HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -63,7 +69,7 @@ public class MovimientosController {
     @PatchMapping("/MovimientosDinero/{id}")
     public ResponseEntity<MovimientoDinero> patchMovimiento(@PathVariable("id") Integer id, @RequestBody Map<Object, Object> fields) {
         try {
-            MovimientoDinero nuevoMovimiento = MovimientoDineroService.getMovimiento(id);
+            MovimientoDinero nuevoMovimiento = movimientoDineroService.getMovimiento(id);
             fields.forEach((key, value) -> {
                 Field field = ReflectionUtils.findField(MovimientoDinero.class, (String) key);
                 if (field != null) {
@@ -76,7 +82,7 @@ public class MovimientosController {
                     }
                 }
             });
-            return new ResponseEntity<>(MovimientoDineroService.saveMovimiento(id, nuevoMovimiento), HttpStatus.OK);
+            return new ResponseEntity<>(movimientoDineroService.saveMovimiento(id, nuevoMovimiento), HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
