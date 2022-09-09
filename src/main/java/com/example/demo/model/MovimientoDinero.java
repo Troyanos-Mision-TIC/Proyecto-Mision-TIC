@@ -35,4 +35,9 @@ public class MovimientoDinero {
     public void setUsuarioEncargado(Empleado usuarioEncargado) {
         this.usuarioEncargado = usuarioEncargado;
     }
+
+    @Override
+    public String toString() {
+        return "Movimiento{monto=" + monto + ", concepto=" + concepto + ", empleado=" + usuarioEncargado+ "}";
+    }
 }

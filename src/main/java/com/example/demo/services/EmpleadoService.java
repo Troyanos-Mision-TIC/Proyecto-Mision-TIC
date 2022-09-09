@@ -23,11 +23,11 @@ public class EmpleadoService {
         empleados.add(empleado2);
     }
 
-    public ArrayList getEmpleados() {
+    public ArrayList<Empleado> getEmpleados() {
         return this.empleados;
     }
 
-    public Empleado getEmpleado(int id){
+    public Empleado getEmpleado(int id) throws IndexOutOfBoundsException {
         return empleados.get(id);
     }
 
@@ -36,11 +36,11 @@ public class EmpleadoService {
         return empleados.get(empleados.size()-1);
     }
 
-    public Empleado removeEmpleado(int id){
+    public Empleado removeEmpleado(int id) throws IndexOutOfBoundsException {
         return empleados.remove(id);
     }
 
-    public Empleado saveEmpleado(int id, Empleado empleado){
+    public Empleado saveEmpleado(int id, Empleado empleado) throws IndexOutOfBoundsException {
         return empleados.set(id, empleado);
     }
 
