@@ -29,8 +29,27 @@ public class ControladorUsuario {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Empleado> postEmpleado(@RequestBody Empleado newEmployee) {
-        return new ResponseEntity<>(empleadoService.addEmpleado(newEmployee), HttpStatus.OK);
+    public ResponseEntity<Empleado> postEmpleado(@RequestBody Map<String, Object> fields) {
+        try {
+            Empleado newEmployee = new Empleado();
+            fields.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(Empleado.class, key);
+                if (field != null) {
+                    field.setAccessible(true);
+                    if (key.equals("empresa")) {
+                        Empresa empresa = empresaService.findById((int) value);
+                        ReflectionUtils.setField(field, newEmployee, empresa);
+                    } else {
+                        ReflectionUtils.setField(field, newEmployee, value);
+                    }
+                }
+            });
+            return new ResponseEntity<>(empleadoService.addEmpleado(newEmployee), HttpStatus.OK);
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/{id}")
@@ -43,11 +62,11 @@ public class ControladorUsuario {
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<Empleado> patchEmpleado(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
+    public ResponseEntity<Empleado> patchEmpleado(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
         try {
             Empleado nuevoEmpleado = empleadoService.getEmpleado(id);
             fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Empleado.class, (String) key);
+                Field field = ReflectionUtils.findField(Empleado.class, key);
                 if (field != null) {
                     field.setAccessible(true);
                     if (key.equals("empresa")) {
