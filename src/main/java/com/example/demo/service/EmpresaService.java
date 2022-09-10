@@ -10,7 +10,7 @@ public class EmpresaService {
      private final ArrayList<Empresa> storageEnterprises;
 
     public EmpresaService() {
-        Empresa firstEnterprise = new Empresa("FirstEnterprise","Cali - Valle",123165423L,321654789);
+        Empresa firstEnterprise = new Empresa("FirstEnterprise","Cali - Valle","7654321","0192837465");
         storageEnterprises = new ArrayList<>();
         storageEnterprises.add(firstEnterprise);
     }
