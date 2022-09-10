@@ -6,6 +6,8 @@ public class MovimientoDinero {
     private String concepto;
     private Empleado usuarioEncargado;
 
+    public MovimientoDinero() {}
+
     public MovimientoDinero(double monto, String concepto, Empleado usuarioEncargado) {
         this.monto = monto;
         this.concepto = concepto;
