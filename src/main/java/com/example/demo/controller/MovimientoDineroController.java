@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Empleado;
+import com.example.demo.model.Empresa;
 import com.example.demo.model.MovimientoDinero;
+import com.example.demo.service.EmpresaService;
 import com.example.demo.services.EmpleadoService;
 import com.example.demo.services.MovimientoDineroService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +20,12 @@ import java.util.Map;
 public class MovimientoDineroController {
     private final MovimientoDineroService movimientoDineroService;
     private final EmpleadoService empleadoService;
+    private final EmpresaService empresaService;
 
-    public MovimientoDineroController(MovimientoDineroService movimientoDineroService, EmpleadoService empleadoService) {
+    public MovimientoDineroController(MovimientoDineroService movimientoDineroService, EmpleadoService empleadoService, EmpresaService empresaService) {
         this.movimientoDineroService = movimientoDineroService;
         this.empleadoService = empleadoService;
+        this.empresaService = empresaService;
     }
     @GetMapping("/movements")
     public ResponseEntity<List<MovimientoDinero>> getAllMovimientoDinero(){
@@ -91,5 +96,20 @@ public class MovimientoDineroController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/enterprises/{id}/movements")
+    public ResponseEntity<List<MovimientoDinero>> getEnterpriseMovements(@PathVariable int id) {
+        Empresa enterprise = empresaService.findById(id);
+        List<MovimientoDinero> movements = movimientoDineroService.consultarTodosMovimientos();
+        List<MovimientoDinero> enterpriseMovements = new ArrayList<>();
+        movements.forEach(movement -> {
+            Empleado user = movement.getUsuarioEncargado();
+            Empresa userEnterprise = user.getEmpresa();
+            if (userEnterprise.equals(enterprise)) {
+                enterpriseMovements.add(movement);
+            }
+        });
+        return new ResponseEntity<>(enterpriseMovements, HttpStatus.OK);
     }
 }
