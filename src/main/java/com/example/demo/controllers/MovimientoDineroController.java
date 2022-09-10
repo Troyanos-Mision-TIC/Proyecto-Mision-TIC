@@ -1,9 +1,9 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
 import com.example.demo.model.MovimientoDinero;
-import com.example.demo.service.EmpresaService;
+import com.example.demo.services.EmpresaService;
 import com.example.demo.services.EmpleadoService;
 import com.example.demo.services.MovimientoDineroService;
 import org.springframework.http.HttpStatus;
