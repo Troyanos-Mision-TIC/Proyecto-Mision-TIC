@@ -13,11 +13,8 @@ public class MovimientoDineroService {
 
     public MovimientoDineroService() {
         this.movimientos = new ArrayList<>();
-        Empresa empresa1 = new Empresa("testEnterprise", "Street 1 # 20-15 Cali", "0987654", "0987654321");
-        Empleado empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", empresa1, "supervisor");
-        Empleado empleado2 = new Empleado("Juan", "juan@hotmail.com", empresa1, "gerente");
-        MovimientoDinero movimiento1 = new MovimientoDinero(50000,"Egreso",empleado1);
-        MovimientoDinero movimiento2 = new MovimientoDinero(25000,"Ingreso",empleado2);
+        MovimientoDinero movimiento1 = new MovimientoDinero(50000,"Egreso",null);
+        MovimientoDinero movimiento2 = new MovimientoDinero(25000,"Ingreso",null);
         movimientos.add(movimiento1);
         movimientos.add(movimiento2);
     }

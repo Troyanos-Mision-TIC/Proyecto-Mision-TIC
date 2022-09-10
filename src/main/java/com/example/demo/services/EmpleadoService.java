@@ -15,9 +15,8 @@ public class EmpleadoService {
 
     public EmpleadoService(){
         this.empleados = new ArrayList<>();
-        this.empresa1 = new Empresa("testEnterprise", "Street 1 # 20-15 Cali", "1234567", "1234567890");
-        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", empresa1, "supervisor");
-        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", empresa1, "gerente");
+        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", null, "supervisor");
+        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", null, "gerente");
 
         empleados.add(empleado1);
         empleados.add(empleado2);

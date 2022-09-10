@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Empleado;
 import com.example.demo.model.MovimientoDinero;
+import com.example.demo.services.EmpleadoService;
 import com.example.demo.services.MovimientoDineroService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import java.util.Map;
 @RestController
 public class MovimientoDineroController {
     private final MovimientoDineroService movimientoDineroService;
+    private final EmpleadoService empleadoService;
 
-    public MovimientoDineroController(MovimientoDineroService movimientoDineroService) {
+    public MovimientoDineroController(MovimientoDineroService movimientoDineroService, EmpleadoService empleadoService) {
         this.movimientoDineroService = movimientoDineroService;
+        this.empleadoService = empleadoService;
     }
     @GetMapping("/movements")
     public ResponseEntity<List<MovimientoDinero>> getAllMovimientoDinero(){
@@ -33,8 +37,27 @@ public class MovimientoDineroController {
     }
 
     @PostMapping("/movements")
-    public ResponseEntity<MovimientoDinero> postMovimientoDinero(@RequestBody MovimientoDinero movimiento){
-        return new ResponseEntity<>(movimientoDineroService.crearMovimiento(movimiento), HttpStatus.OK);
+    public ResponseEntity<MovimientoDinero> postMovimientoDinero(@RequestBody Map<String, Object> fields){
+        try {
+            MovimientoDinero newMovement = new MovimientoDinero();
+            fields.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(MovimientoDinero.class, key);
+                if (field != null) {
+                    field.setAccessible(true);
+                    if (key.equals("usuarioEncargado")) {
+                        Empleado user = empleadoService.getEmpleado((int) value);
+                        ReflectionUtils.setField(field, newMovement, user);
+                    } else {
+                        ReflectionUtils.setField(field, newMovement, value);
+                    }
+                }
+            });
+            return new ResponseEntity<>(movimientoDineroService.crearMovimiento(newMovement), HttpStatus.OK);
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/movements/{id}")
@@ -54,7 +77,12 @@ public class MovimientoDineroController {
                 Field field = ReflectionUtils.findField(MovimientoDinero.class, key);
                 if (field != null) {
                     field.setAccessible(true);
-                    ReflectionUtils.setField(field, modifiedMovimiento, value);
+                    if (key.equals("usuarioEncargado")) {
+                        Empleado user = empleadoService.getEmpleado((int) value);
+                        ReflectionUtils.setField(field, modifiedMovimiento, user);
+                    } else {
+                        ReflectionUtils.setField(field, modifiedMovimiento, value);
+                    }
                 }
             });
             return new ResponseEntity<>(movimientoDineroService.guardarMovimiento(id, modifiedMovimiento), HttpStatus.OK);
