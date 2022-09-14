@@ -1,24 +1,41 @@
 package com.example.demo.model;
 
-public class MovimientoDinero {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    private double monto;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "transactions")
+public class MovimientoDinero implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "amount", nullable = false)
+    private float monto;
+
+    @Column(name = "concept")
     private String concepto;
+
+    @JsonIgnoreProperties(value = {"transacciones"})
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Empleado usuarioEncargado;
 
     public MovimientoDinero() {}
 
-    public MovimientoDinero(double monto, String concepto, Empleado usuarioEncargado) {
+    public MovimientoDinero(float monto, String concepto, Empleado usuarioEncargado) {
         this.monto = monto;
         this.concepto = concepto;
         this.usuarioEncargado = usuarioEncargado;
     }
 
-    public double getMonto() {
+    public float getMonto() {
         return monto;
     }
 
-    public void setMonto(double monto) {
+    public void setMonto(float monto) {
         this.monto = monto;
     }
 
@@ -41,5 +58,13 @@ public class MovimientoDinero {
     @Override
     public String toString() {
         return "Movimiento{monto=" + monto + ", concepto=" + concepto + ", empleado=" + usuarioEncargado+ "}";
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.Role;
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
 import com.example.demo.services.EmpleadoService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ControladorUsuario {
@@ -22,8 +24,8 @@ public class ControladorUsuario {
         this.empleadoService = empleadoService;
         this.empresaService = empresaService;
     }
-
-    @GetMapping("/users")
+        
+        @GetMapping("/users")
     public ResponseEntity<List<Empleado>> getEmpleados() {
         return new ResponseEntity<>(empleadoService.getEmpleados(), HttpStatus.OK);
     }
@@ -37,49 +39,55 @@ public class ControladorUsuario {
                 if (field != null) {
                     field.setAccessible(true);
                     if (key.equals("empresa")) {
-                        Empresa empresa = empresaService.findById((int) value);
-                        ReflectionUtils.setField(field, newEmployee, empresa);
+                        Optional<Empresa> empresa = empresaService.findById((long)(int) value);
+                        empresa.ifPresent(empresa1 -> ReflectionUtils.setField(field, newEmployee, empresa1));
+                    } else if (key.equals("rol")) {
+                        Role rol = Role.valueOf((String) value);
+                        ReflectionUtils.setField(field, newEmployee, rol);
                     } else {
                         ReflectionUtils.setField(field, newEmployee, value);
                     }
                 }
             });
-            return new ResponseEntity<>(empleadoService.addEmpleado(newEmployee), HttpStatus.OK);
-        } catch (IndexOutOfBoundsException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(empleadoService.saveEmpleado(newEmployee), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<Empleado> getEmpleadoPorId(@PathVariable Integer id) {
-        try {
-            return new ResponseEntity<>(empleadoService.getEmpleado(id), HttpStatus.OK);
-        } catch (IndexOutOfBoundsException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Empleado> getEmpleadoPorId(@PathVariable Long id) {
+        Optional<Empleado> employeeContainer = empleadoService.getEmpleado(id);
+        Empleado employee = employeeContainer.get();
+        System.out.println(employee);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<Empleado> patchEmpleado(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<Empleado> patchEmpleado(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
         try {
-            Empleado nuevoEmpleado = empleadoService.getEmpleado(id);
+            Empleado employee = empleadoService.getEmpleado(id).get();
             fields.forEach((key, value) -> {
                 Field field = ReflectionUtils.findField(Empleado.class, key);
                 if (field != null) {
                     field.setAccessible(true);
                     if (key.equals("empresa")) {
-                        Empresa empresa = empresaService.findById((int) value);
-                        ReflectionUtils.setField(field, nuevoEmpleado, empresa);
+                        Optional<Empresa> empresa = empresaService.findById((long)(int)value);
+                        if (empresa.isPresent())
+                            ReflectionUtils.setField(field, employee, empresa.get());
+                    } else if (key.equals("rol")) {
+                        Role role = Role.valueOf((String) value);
+                        ReflectionUtils.setField(field, employee, role);
                     } else {
-                        ReflectionUtils.setField(field, nuevoEmpleado, value);
+                        ReflectionUtils.setField(field, employee, value);
                     }
                 }
             });
-            return new ResponseEntity<>(empleadoService.saveEmpleado(id, nuevoEmpleado), HttpStatus.OK);
-        } catch (IndexOutOfBoundsException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(empleadoService.saveEmpleado(employee), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -88,9 +96,9 @@ public class ControladorUsuario {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Empleado> deleteEmpleado(@PathVariable Integer id) {
         try {
-            return new ResponseEntity<>(empleadoService.removeEmpleado(id), HttpStatus.OK);
-        } catch (IndexOutOfBoundsException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(empleadoService.removeEmpleado(id).get(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

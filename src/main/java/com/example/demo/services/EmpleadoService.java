@@ -1,46 +1,36 @@
 package com.example.demo.services;
 
 import com.example.demo.model.Empleado;
-import com.example.demo.model.Empresa;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpleadoService {
-    Empleado empleado1;
-    Empleado empleado2;
-    Empresa empresa1;
-    ArrayList<Empleado> empleados;
+    private final UserRepository userRepository;
 
-    public EmpleadoService(){
-        this.empleados = new ArrayList<>();
-        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", null, "supervisor");
-        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", null, "gerente");
-
-        empleados.add(empleado1);
-        empleados.add(empleado2);
+    public EmpleadoService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public ArrayList<Empleado> getEmpleados() {
-        return this.empleados;
+    public List<Empleado> getEmpleados() {
+        return userRepository.findAll();
     }
 
-    public Empleado getEmpleado(int id) throws IndexOutOfBoundsException {
-        return empleados.get(id);
+    public Optional<Empleado> getEmpleado(long id) {
+        return userRepository.findById(id);
     }
 
-    public Empleado addEmpleado(Empleado empleado) {
-        this.empleados.add(empleado);
-        return empleados.get(empleados.size()-1);
+    public Optional<Empleado> removeEmpleado(long id) {
+        Optional<Empleado> deletedUser = userRepository.findById(id);
+        userRepository.deleteById(id);
+        return deletedUser;
     }
 
-    public Empleado removeEmpleado(int id) throws IndexOutOfBoundsException {
-        return empleados.remove(id);
-    }
-
-    public Empleado saveEmpleado(int id, Empleado empleado) throws IndexOutOfBoundsException {
-        return empleados.set(id, empleado);
+    public Empleado saveEmpleado(Empleado empleado) {
+        return userRepository.save(empleado);
     }
 
 }

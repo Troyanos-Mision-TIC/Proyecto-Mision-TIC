@@ -1,38 +1,47 @@
 package com.example.demo.services;
 
 import com.example.demo.model.Empresa;
+import com.example.demo.repositories.EnterpriseRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmpresaService {
-     private final ArrayList<Empresa> storageEnterprises;
+     private final EnterpriseRepository enterpriseRepository;
 
-    public EmpresaService() {
-        Empresa firstEnterprise = new Empresa("FirstEnterprise","Cali - Valle","7654321","0192837465");
-        storageEnterprises = new ArrayList<>();
-        storageEnterprises.add(firstEnterprise);
+    public EmpresaService(EnterpriseRepository enterpriseRepository) {
+        this.enterpriseRepository = enterpriseRepository;
     }
 
-    public ArrayList<Empresa> findAll(){
-        return storageEnterprises;
+    public List<Empresa> findAll() {
+        return enterpriseRepository.findAll();
     }
 
-    public Empresa findById(int id) throws IndexOutOfBoundsException {
-        return storageEnterprises.get(id);
+    public Optional<Empresa> findById(long id) {
+        return enterpriseRepository.findById(id);
     }
 
-    public Empresa append(Empresa enterprise) {
-        storageEnterprises.add(enterprise);
-        return storageEnterprises.get(storageEnterprises.size() - 1);
+    public Empresa save(Empresa enterprise) {
+        return enterpriseRepository.save(enterprise);
     }
 
-    public Empresa save(Integer id, Empresa enterprise) throws IndexOutOfBoundsException {
-        return storageEnterprises.set(id, enterprise);
+    public Empresa editEnterprise(Empresa enterprise, Map<String, Object> fields) {
+        fields.forEach((key, value) ->{
+            Field field = ReflectionUtils.findField(Empresa.class, key);
+            if (field != null) {
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, enterprise, value);
+            }
+        });
+        return enterprise;
     }
 
-    public Empresa deleteById(int id) throws IndexOutOfBoundsException {
-        return storageEnterprises.remove(id);
+    public void deleteById(long id) {
+        enterpriseRepository.deleteById(id);
     }
 }

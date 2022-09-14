@@ -1,37 +1,58 @@
 package com.example.demo.services;
 
+import com.example.demo.model.Empleado;
 import com.example.demo.model.MovimientoDinero;
-import java.util.ArrayList;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import com.example.demo.repositories.TransactionRepository;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 @Service
 public class MovimientoDineroService {
 
-    ArrayList<MovimientoDinero> movimientos;
+    private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
 
-    public MovimientoDineroService() {
-        this.movimientos = new ArrayList<>();
+    public MovimientoDineroService(TransactionRepository transactionRepository, UserRepository userRepository) {
+        this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
     }
 
-    public ArrayList<MovimientoDinero> consultarTodosMovimientos() {
-        return movimientos;
+    public List<MovimientoDinero> consultarTodosMovimientos() {
+        return transactionRepository.findAll();
     }
     
-    public MovimientoDinero consultarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
-        return movimientos.get(idmovimiento);
+    public Optional<MovimientoDinero> consultarMovimiento(long id) {
+        return transactionRepository.findById(id);
     }
     
-    public MovimientoDinero crearMovimiento(MovimientoDinero Movimiento) {
-        this.movimientos.add(Movimiento);
-        return movimientos.get(movimientos.size()-1);
+    public MovimientoDinero guardarMovimiento(MovimientoDinero movimiento){
+        return transactionRepository.save(movimiento);
+    }
+
+    public MovimientoDinero editarMovimiento(MovimientoDinero movement, Map<String, Object> fields) {
+        fields.forEach((key, value) -> {
+            Field field = ReflectionUtils.findField(MovimientoDinero.class, key);
+            if (field != null) {
+                field.setAccessible(true);
+                if (key.equals("usuarioEncargado")) {
+                    Empleado user = userRepository.findById((long)(int) value).get();
+                    ReflectionUtils.setField(field, movement, user);
+                } else {
+                    ReflectionUtils.setField(field, movement, value);
+                }
+            }
+        });
+        return movement;
     }
     
-    public MovimientoDinero guardarMovimiento(int idmovimiento,MovimientoDinero Movimiento){
-        this.movimientos.set(idmovimiento, Movimiento);
-        return movimientos.get(idmovimiento);
-    }
-    
-    public MovimientoDinero eliminarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
-        return this.movimientos.remove(idmovimiento);
+    public void eliminarMovimiento(long id) {
+        transactionRepository.deleteById(id);
     }
 }
