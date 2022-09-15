@@ -1,9 +1,22 @@
 package com.example.demo.model;
 
-public class MovimientoDinero {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "cashMove")
+public class MovimientoDinero {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name="monto")
     private double monto;
+
+    @Column(name="concepto")
     private String concepto;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "enterprises")
     private Empleado usuarioEncargado;
 
     public MovimientoDinero() {}

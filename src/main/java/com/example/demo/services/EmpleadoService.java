@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
+import com.example.demo.model.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ public class EmpleadoService {
 
     public EmpleadoService(){
         this.empleados = new ArrayList<>();
-        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", null, "supervisor");
-        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", null, "gerente");
+        //String nombre, String correo, Empresa empresa, EnumRolName rol, Profile profile
+        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", null, Empleado.EnumRolName.ADMIN, null);
+        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", null, Empleado.EnumRolName.OPERARIO, null);
 
         empleados.add(empleado1);
         empleados.add(empleado2);
