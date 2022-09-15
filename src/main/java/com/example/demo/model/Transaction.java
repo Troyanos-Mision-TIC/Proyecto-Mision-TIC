@@ -10,7 +10,8 @@ import java.util.Date;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(nullable=false)
+    private Integer id;
 
     @Column(name="concept")
     private String concept;
@@ -19,7 +20,7 @@ public class Transaction {
     private float amount;
 
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(referencedColumnName="id")
     private Empleado user;
 
     @Column(name="enterprise")
@@ -48,7 +49,7 @@ public class Transaction {
         this.updatedAt = updatedAt;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
