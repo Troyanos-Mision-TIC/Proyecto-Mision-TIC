@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "enterprise")
+@Table(name = "Enterprise")
 public class Empresa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,7 +15,7 @@ public class Empresa implements Serializable {
     @Column(name = "name", unique = true)
     private String nombre;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address", unique = true)
     private String direccion;
 
     @Column(name = "phone", nullable = false)

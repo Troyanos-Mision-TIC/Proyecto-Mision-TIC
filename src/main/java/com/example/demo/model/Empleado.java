@@ -2,15 +2,14 @@ package com.example.demo.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "Employee")
 public class Empleado implements Serializable {
 
-    public enum EnumRolName {
+    public enum EnumRoleName {
         ADMIN,
         OPERARIO;
     }
@@ -31,7 +30,7 @@ public class Empleado implements Serializable {
     private Empresa empresa;
 
     @Column(name = "role")
-    private EnumRolName rol;
+    private EnumRoleName role;
 
     @OneToOne
     @JoinColumn(referencedColumnName = "id")
@@ -49,12 +48,12 @@ public class Empleado implements Serializable {
 
     public Empleado() {}
 
-    public Empleado(String nombre, String correo, Empresa empresa, EnumRolName rol, Profile profile) {
+    public Empleado(String nombre, String correo, Empresa empresa, EnumRoleName rol, Profile profile) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.empresa = empresa;
-        this.rol = rol;
+        this.role = rol;
         this.profile = profile;
     }
 
@@ -82,12 +81,12 @@ public class Empleado implements Serializable {
         this.empresa = empresa;
     }
 
-    public EnumRolName getRol() {
-        return rol;
+    public EnumRoleName getRole() {
+        return role;
     }
 
-    public void setRol(EnumRolName rol) {
-        this.rol = rol;
+    public void setRole(EnumRoleName role) {
+        this.role = role;
     }
 
     public long getId() {
@@ -132,6 +131,6 @@ public class Empleado implements Serializable {
 
     @Override
     public String toString() {
-        return "Empleado{nombre=" + nombre + ", correo=" + correo + ", empresa=" + empresa + ", rol=" + rol + "}";
+        return "Empleado{nombre=" + nombre + ", correo=" + correo + ", empresa=" + empresa + ", rol=" + role + "}";
     }
 }

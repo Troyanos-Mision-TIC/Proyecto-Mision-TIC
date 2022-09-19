@@ -1,12 +1,10 @@
 package com.example.demo.model;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="transations")
+@Table(name="Transaction")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +21,8 @@ public class Transaction {
     @JoinColumn(referencedColumnName="id")
     private Empleado user;
 
-    @Column(name="enterprise")
+    @ManyToOne
+    @JoinColumn(referencedColumnName="id")
     private Empresa enterprise;
 
     @Column(name="createdAt")

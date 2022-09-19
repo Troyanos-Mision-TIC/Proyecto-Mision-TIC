@@ -1,38 +1,35 @@
 package com.example.demo.services;
 
+import com.example.demo.repo.EnterpriseRepository;
 import com.example.demo.model.Empresa;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpresaService {
-     private final ArrayList<Empresa> storageEnterprises;
+    @Autowired
+    EnterpriseRepository enterpriseRepository;
 
     public EmpresaService() {
-        Empresa firstEnterprise = new Empresa("FirstEnterprise","Cali - Valle","7654321","0192837465");
-        storageEnterprises = new ArrayList<>();
-        storageEnterprises.add(firstEnterprise);
     }
 
-    public ArrayList<Empresa> findAll(){
-        return storageEnterprises;
+    public List<Empresa> findAll(){
+        return enterpriseRepository.findAll();
     }
 
-    public Empresa findById(int id) throws IndexOutOfBoundsException {
-        return storageEnterprises.get(id);
+    public Optional<Empresa> findById(int id) throws IndexOutOfBoundsException {
+        return enterpriseRepository.findById(id);
     }
 
-    public Empresa append(Empresa enterprise) {
-        storageEnterprises.add(enterprise);
-        return storageEnterprises.get(storageEnterprises.size() - 1);
+    public Empresa save(Empresa enterprise) throws IndexOutOfBoundsException {
+        return enterpriseRepository.save(enterprise);
     }
 
-    public Empresa save(Integer id, Empresa enterprise) throws IndexOutOfBoundsException {
-        return storageEnterprises.set(id, enterprise);
-    }
-
-    public Empresa deleteById(int id) throws IndexOutOfBoundsException {
-        return storageEnterprises.remove(id);
+    public Boolean deleteById(int id) throws IndexOutOfBoundsException {
+        enterpriseRepository.deleteById(id);
+        return true;
     }
 }

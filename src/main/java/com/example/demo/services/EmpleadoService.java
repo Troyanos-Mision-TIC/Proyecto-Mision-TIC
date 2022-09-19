@@ -1,48 +1,38 @@
 package com.example.demo.services;
 
+import com.example.demo.repo.EmployeeRepository;
 import com.example.demo.model.Empleado;
-import com.example.demo.model.Empresa;
-import com.example.demo.model.Profile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpleadoService {
-    Empleado empleado1;
-    Empleado empleado2;
-    Empresa empresa1;
-    ArrayList<Empleado> empleados;
 
-    public EmpleadoService(){
-        this.empleados = new ArrayList<>();
-        //String nombre, String correo, Empresa empresa, EnumRolName rol, Profile profile
-        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", null, Empleado.EnumRolName.ADMIN, null);
-        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", null, Empleado.EnumRolName.OPERARIO, null);
+    @Autowired
+    EmployeeRepository employeeRepository;
 
-        empleados.add(empleado1);
-        empleados.add(empleado2);
+    public EmpleadoService() {
     }
 
-    public ArrayList<Empleado> getEmpleados() {
-        return this.empleados;
+    public List<Empleado> findEmpleados() {
+        return employeeRepository.findAll();
     }
 
-    public Empleado getEmpleado(int id) throws IndexOutOfBoundsException {
-        return empleados.get(id);
+    public Optional<Empleado> findEmpleadoById(int id) throws IndexOutOfBoundsException {
+        return employeeRepository.findById(id);
     }
 
-    public Empleado addEmpleado(Empleado empleado) {
-        this.empleados.add(empleado);
-        return empleados.get(empleados.size()-1);
+    public Boolean deleteEmpleadoById(int id) throws IndexOutOfBoundsException {
+        employeeRepository.deleteById(id);
+        return true;
     }
 
-    public Empleado removeEmpleado(int id) throws IndexOutOfBoundsException {
-        return empleados.remove(id);
-    }
+    public Empleado saveEmpleado(Empleado empleado) throws IndexOutOfBoundsException {
+        return employeeRepository.save(empleado);
 
-    public Empleado saveEmpleado(int id, Empleado empleado) throws IndexOutOfBoundsException {
-        return empleados.set(id, empleado);
     }
 
 }

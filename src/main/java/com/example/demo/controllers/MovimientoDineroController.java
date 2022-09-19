@@ -1,11 +1,11 @@
 package com.example.demo.controllers;
 
+import com.example.demo.services.EmpleadoService;
+import com.example.demo.services.EmpresaService;
+import com.example.demo.services.MovimientoDineroService;
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
 import com.example.demo.model.MovimientoDinero;
-import com.example.demo.services.EmpresaService;
-import com.example.demo.services.EmpleadoService;
-import com.example.demo.services.MovimientoDineroService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class MovimientoDineroController {
@@ -27,13 +28,14 @@ public class MovimientoDineroController {
         this.empleadoService = empleadoService;
         this.empresaService = empresaService;
     }
+
     @GetMapping("/movements")
-    public ResponseEntity<List<MovimientoDinero>> getAllMovimientoDinero(){
+    public ResponseEntity<List<MovimientoDinero>> getAllMovimientoDinero() {
         return new ResponseEntity<>(movimientoDineroService.consultarTodosMovimientos(), HttpStatus.OK);
     }
 
     @GetMapping("/movements/{id}")
-    public ResponseEntity<MovimientoDinero> getMovimientoDineroById(@PathVariable("id") int id){
+    public ResponseEntity<Optional<MovimientoDinero>> getMovimientoDineroById(@PathVariable("id") int id) {
         try {
             return new ResponseEntity<>(movimientoDineroService.consultarMovimiento(id), HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
@@ -42,7 +44,7 @@ public class MovimientoDineroController {
     }
 
     @PostMapping("/movements")
-    public ResponseEntity<MovimientoDinero> postMovimientoDinero(@RequestBody Map<String, Object> fields){
+    public ResponseEntity<MovimientoDinero> postMovimientoDinero(@RequestBody Map<String, Object> fields) {
         try {
             MovimientoDinero newMovement = new MovimientoDinero();
             fields.forEach((key, value) -> {
@@ -50,8 +52,8 @@ public class MovimientoDineroController {
                 if (field != null) {
                     field.setAccessible(true);
                     if (key.equals("usuarioEncargado")) {
-                        Empleado user = empleadoService.getEmpleado((int) value);
-                        ReflectionUtils.setField(field, newMovement, user);
+                        Optional<Empleado> user = empleadoService.findEmpleadoById((int) value);
+                        ReflectionUtils.setField(field, newMovement, user.get());
                     } else {
                         ReflectionUtils.setField(field, newMovement, value);
                     }
@@ -66,7 +68,7 @@ public class MovimientoDineroController {
     }
 
     @DeleteMapping("/movements/{id}")
-    public ResponseEntity<MovimientoDinero> deleteMovimiento(@PathVariable("id") int id) {
+    public ResponseEntity<Boolean> deleteMovimiento(@PathVariable("id") int id) {
         try {
             return new ResponseEntity<>(movimientoDineroService.eliminarMovimiento(id), HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
@@ -77,20 +79,20 @@ public class MovimientoDineroController {
     @PatchMapping("/movements/{id}")
     public ResponseEntity<MovimientoDinero> patchMovimiento(@PathVariable int id, @RequestBody Map<String, Object> fields) {
         try {
-            MovimientoDinero modifiedMovimiento = movimientoDineroService.consultarMovimiento(id);
+            Optional<MovimientoDinero> modifiedMovimiento = movimientoDineroService.consultarMovimiento(id);
             fields.forEach((key, value) -> {
                 Field field = ReflectionUtils.findField(MovimientoDinero.class, key);
                 if (field != null) {
                     field.setAccessible(true);
                     if (key.equals("usuarioEncargado")) {
-                        Empleado user = empleadoService.getEmpleado((int) value);
-                        ReflectionUtils.setField(field, modifiedMovimiento, user);
+                        Optional<Empleado> user = empleadoService.findEmpleadoById((int) value);
+                        ReflectionUtils.setField(field, modifiedMovimiento.get(), user.get());
                     } else {
-                        ReflectionUtils.setField(field, modifiedMovimiento, value);
+                        ReflectionUtils.setField(field, modifiedMovimiento.get(), value);
                     }
                 }
             });
-            return new ResponseEntity<>(movimientoDineroService.guardarMovimiento(id, modifiedMovimiento), HttpStatus.OK);
+            return new ResponseEntity<>(movimientoDineroService.crearMovimiento(modifiedMovimiento.get()), HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -100,13 +102,13 @@ public class MovimientoDineroController {
 
     @GetMapping("/enterprises/{id}/movements")
     public ResponseEntity<List<MovimientoDinero>> getEnterpriseMovements(@PathVariable int id) {
-        Empresa enterprise = empresaService.findById(id);
+        Optional<Empresa> enterprise = empresaService.findById(id);
         List<MovimientoDinero> movements = movimientoDineroService.consultarTodosMovimientos();
         List<MovimientoDinero> enterpriseMovements = new ArrayList<>();
         movements.forEach(movement -> {
             Empleado user = movement.getUsuarioEncargado();
             Empresa userEnterprise = user.getEmpresa();
-            if (userEnterprise.equals(enterprise)) {
+            if (userEnterprise.equals(enterprise.get())) {
                 enterpriseMovements.add(movement);
             }
         });

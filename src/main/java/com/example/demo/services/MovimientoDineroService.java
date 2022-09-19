@@ -1,37 +1,38 @@
 package com.example.demo.services;
 
+import com.example.demo.repo.MoneyMovRepository;
 import com.example.demo.model.MovimientoDinero;
-import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MovimientoDineroService {
 
-    ArrayList<MovimientoDinero> movimientos;
+    @Autowired
+    MoneyMovRepository moneyMovRepository;
 
     public MovimientoDineroService() {
-        this.movimientos = new ArrayList<>();
+
     }
 
-    public ArrayList<MovimientoDinero> consultarTodosMovimientos() {
-        return movimientos;
+    public List<MovimientoDinero> consultarTodosMovimientos() {
+        return moneyMovRepository.findAll();
     }
     
-    public MovimientoDinero consultarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
-        return movimientos.get(idmovimiento);
+    public Optional<MovimientoDinero> consultarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
+        return moneyMovRepository.findById(idmovimiento);
     }
     
     public MovimientoDinero crearMovimiento(MovimientoDinero Movimiento) {
-        this.movimientos.add(Movimiento);
-        return movimientos.get(movimientos.size()-1);
+        return moneyMovRepository.save(Movimiento);
     }
     
-    public MovimientoDinero guardarMovimiento(int idmovimiento,MovimientoDinero Movimiento){
-        this.movimientos.set(idmovimiento, Movimiento);
-        return movimientos.get(idmovimiento);
-    }
-    
-    public MovimientoDinero eliminarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
-        return this.movimientos.remove(idmovimiento);
+    public Boolean eliminarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
+        moneyMovRepository.deleteById(idmovimiento);
+        return true;
     }
 }
