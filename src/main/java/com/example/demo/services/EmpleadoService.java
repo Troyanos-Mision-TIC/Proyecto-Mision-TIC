@@ -15,19 +15,18 @@ public class EmpleadoService {
 
     public EmpleadoService(){
         this.empleados = new ArrayList<>();
-        this.empresa1 = new Empresa("testEnterprise", "Street 1 # 20-15 Cali", 3214567890L, 1568453218L);
-        this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", empresa1, "supervisor");
-        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", empresa1, "gerente");
+        /*this.empleado1 = new Empleado("Daniel", "deyproj@hotmail.com", null, "supervisor");
+        this.empleado2 = new Empleado("Juan", "juan@hotmail.com", null, "gerente");*/
 
         empleados.add(empleado1);
         empleados.add(empleado2);
     }
 
-    public ArrayList getEmpleados() {
+    public ArrayList<Empleado> getEmpleados() {
         return this.empleados;
     }
 
-    public Empleado getEmpleado(int id){
+    public Empleado getEmpleado(int id) throws IndexOutOfBoundsException {
         return empleados.get(id);
     }
 
@@ -36,11 +35,11 @@ public class EmpleadoService {
         return empleados.get(empleados.size()-1);
     }
 
-    public Empleado removeEmpleado(int id){
+    public Empleado removeEmpleado(int id) throws IndexOutOfBoundsException {
         return empleados.remove(id);
     }
 
-    public Empleado saveEmpleado(int id, Empleado empleado){
+    public Empleado saveEmpleado(int id, Empleado empleado) throws IndexOutOfBoundsException {
         return empleados.set(id, empleado);
     }
 
