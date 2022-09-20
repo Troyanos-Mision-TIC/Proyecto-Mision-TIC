@@ -1,12 +1,15 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Employee")
+@Table(name = "employee")
 public class Empleado implements Serializable {
 
     public enum EnumRoleName {
@@ -17,52 +20,45 @@ public class Empleado implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private long id;
-
-    @Column(name = "name")
-    private String nombre;
+    private Integer id;
 
     @Column(name = "email", nullable = false, unique = true)
     private String correo;
 
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
-    private Empresa empresa;
+    @OneToOne
+    @JoinColumn(name = "profile")
+    private Profile profile;
 
     @Column(name = "role")
     private EnumRoleName role;
 
-    @OneToOne
-    @JoinColumn(referencedColumnName = "id")
-    private Profile profile;
+    @ManyToOne
+    @JoinColumn(name = "enterprise")
+    private Empresa empresa;
 
     @OneToMany
-    @JoinColumn(name = "id")
-    private List<Transaction> transations;
+    @JoinColumn(name = "transations")
+    private List<MovimientoDinero> transations;
 
+    @CreatedDate
     @Column(name = "createdAt")
     private Date createdAt;
 
-    @Column(name = "updateAt")
-    private Date updateAt;
+    @LastModifiedDate
+    @Column(name = "updatedAt")
+    private Date updatedAt;
 
     public Empleado() {}
 
-    public Empleado(String nombre, String correo, Empresa empresa, EnumRoleName rol, Profile profile) {
+    public Empleado(Integer id, String correo, Profile profile, EnumRoleName role, Empresa empresa, List<MovimientoDinero> transations, Date createdAt, Date updatedAt) {
         this.id = id;
-        this.nombre = nombre;
         this.correo = correo;
-        this.empresa = empresa;
-        this.role = rol;
         this.profile = profile;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.role = role;
+        this.empresa = empresa;
+        this.transations = transations;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getCorreo() {
@@ -89,7 +85,7 @@ public class Empleado implements Serializable {
         this.role = role;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -101,7 +97,7 @@ public class Empleado implements Serializable {
         this.profile = profile;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -114,23 +110,32 @@ public class Empleado implements Serializable {
     }
 
     public Date getUpdateAt() {
-        return updateAt;
+        return updatedAt;
     }
 
     public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+        this.updatedAt = updateAt;
     }
 
-    public List<Transaction> getTransations() {
+    public List<MovimientoDinero> getTransations() {
         return transations;
     }
 
-    public void setTransations(List<Transaction> transations) {
+    public void setTransations(List<MovimientoDinero> transations) {
         this.transations = transations;
     }
 
     @Override
     public String toString() {
-        return "Empleado{nombre=" + nombre + ", correo=" + correo + ", empresa=" + empresa + ", rol=" + role + "}";
+        return "Empleado{" +
+                "id=" + id +
+                ", correo='" + correo + '\'' +
+                ", profile=" + profile +
+                ", role=" + role +
+                ", empresa=" + empresa +
+                ", transations=" + transations +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

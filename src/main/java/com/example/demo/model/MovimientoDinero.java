@@ -1,30 +1,52 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
-@Table(name = "cashMove")
-public class MovimientoDinero {
+@Table(name = "transaction")
+public class MovimientoDinero implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="monto")
-    private double monto;
-
-    @Column(name="concepto")
+    @Column(name = "concept")
     private String concepto;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "enterprises")
-    private Empleado usuarioEncargado;
+    @Column(name = "amount")
+    private double monto;
 
-    public MovimientoDinero() {}
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private Empleado user;
 
-    public MovimientoDinero(double monto, String concepto, Empleado usuarioEncargado) {
-        this.monto = monto;
+    @ManyToOne
+    @JoinColumn(name = "enterprise")
+    private Empresa empresa;
+
+    @CreatedDate
+    @Column(name = "createdAt")
+    private Date createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updatedAt")
+    private Date updatedAt;
+
+    public MovimientoDinero() {
+    }
+
+    public MovimientoDinero(Integer id, String concepto, double monto, Empleado user, Empresa empresa, Date createdAt, Date updatedAt) {
+        this.id = id;
         this.concepto = concepto;
-        this.usuarioEncargado = usuarioEncargado;
+        this.monto = monto;
+        this.user = user;
+        this.empresa = empresa;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public double getMonto() {
@@ -43,16 +65,56 @@ public class MovimientoDinero {
         this.concepto = concepto;
     }
 
-    public Empleado getUsuarioEncargado() {
-        return usuarioEncargado;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUsuarioEncargado(Empleado usuarioEncargado) {
-        this.usuarioEncargado = usuarioEncargado;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Empleado getUser() {
+        return user;
+    }
+
+    public void setUser(Empleado user) {
+        this.user = user;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 
     @Override
     public String toString() {
-        return "Movimiento{monto=" + monto + ", concepto=" + concepto + ", empleado=" + usuarioEncargado+ "}";
+        return "MovimientoDinero{" +
+                "id=" + id +
+                ", concepto='" + concepto + '\'' +
+                ", monto=" + monto +
+                ", user=" + user +
+                ", empresa=" + empresa +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

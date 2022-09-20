@@ -1,11 +1,11 @@
 package com.example.demo.controllers;
 
-import com.example.demo.services.EmpleadoService;
-import com.example.demo.services.EmpresaService;
-import com.example.demo.services.MovimientoDineroService;
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Empresa;
 import com.example.demo.model.MovimientoDinero;
+import com.example.demo.services.EmpleadoService;
+import com.example.demo.services.EmpresaService;
+import com.example.demo.services.MovimientoDineroService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -106,7 +106,7 @@ public class MovimientoDineroController {
         List<MovimientoDinero> movements = movimientoDineroService.consultarTodosMovimientos();
         List<MovimientoDinero> enterpriseMovements = new ArrayList<>();
         movements.forEach(movement -> {
-            Empleado user = movement.getUsuarioEncargado();
+            Empleado user = movement.getUser();
             Empresa userEnterprise = user.getEmpresa();
             if (userEnterprise.equals(enterprise.get())) {
                 enterpriseMovements.add(movement);

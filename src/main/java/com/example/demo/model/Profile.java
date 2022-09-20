@@ -1,11 +1,15 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="Profile")
-public class Profile {
+@Table(name = "profile")
+public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -17,29 +21,32 @@ public class Profile {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "name")
+    @Column(name = "user")
     private Empleado user;
 
+    @CreatedDate
     @Column(name = "createdAt")
     private Date createdAt;
 
-    @Column(name = "updateAt")
-    private Date updateAt;
+    @LastModifiedDate
+    @Column(name = "updatedAt")
+    private Date updatedAt;
 
-    public Integer getId() {
-        return id;
-    }
 
     public Profile() {
     }
 
-    public Profile(Integer id, String image, String phone, Empleado user, Date createdAt, Date updateAt) {
+    public Profile(Integer id, String image, String phone, Empleado user, Date createdAt, Date updatedAt) {
         this.id = id;
         this.image = image;
         this.phone = phone;
         this.user = user;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public void setId(Integer id) {
@@ -79,10 +86,22 @@ public class Profile {
     }
 
     public Date getUpdateAt() {
-        return updateAt;
+        return updatedAt;
     }
 
     public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+        this.updatedAt = updateAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", image='" + image + '\'' +
+                ", phone='" + phone + '\'' +
+                ", user=" + user +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

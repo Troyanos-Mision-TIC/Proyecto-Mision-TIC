@@ -1,50 +1,61 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Enterprise")
+@Table(name = "enterprise")
 public class Empresa implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name", unique = true)
     private String nombre;
 
-    @Column(name = "address", unique = true)
-    private String direccion;
+    @Column(name = "document", unique = true)
+    private String nit;
 
     @Column(name = "phone", nullable = false)
     private String telefono;
 
-    @Column(name = "document", unique = true)
-    private String nit;
+    @Column(name = "address", unique = true)
+    private String direccion;
 
     @OneToMany
-    @JoinColumn(referencedColumnName = "id")
-    private List<Transaction> transactions;
+    @JoinColumn(name = "users")
+    private List<Empleado> empleado;
 
+    @OneToMany
+    @JoinColumn(name = "transations")
+    private List<MovimientoDinero> transactions;
+
+    @CreatedDate
     @Column(name = "createdAt")
     private Date createdAt;
 
+    @LastModifiedDate
     @Column(name = "updatedAt")
     private Date updatedAt;
 
-    @OneToMany
-    @JoinColumn(referencedColumnName = "id")
-    private List<Empleado> empleado;
+    public Empresa() {
+    }
 
-    public Empresa() {}
-
-    public Empresa(String nombre, String direccion, String telefono, String nit) {
+    public Empresa(Integer id, String nombre, String nit, String telefono, String direccion, List<Empleado> empleado, List<MovimientoDinero> transactions, Date createdAt, Date updatedAt) {
+        this.id = id;
         this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
         this.nit = nit;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.empleado = empleado;
+        this.transactions = transactions;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getNombre() {
@@ -95,11 +106,11 @@ public class Empresa implements Serializable {
         this.empleado = empleado;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<MovimientoDinero> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<MovimientoDinero> transactions) {
         this.transactions = transactions;
     }
 
@@ -117,5 +128,20 @@ public class Empresa implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Empresa{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", nit='" + nit + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", empleado=" + empleado +
+                ", transactions=" + transactions +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

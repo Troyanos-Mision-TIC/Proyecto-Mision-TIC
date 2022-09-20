@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.repo.EnterpriseRepository;
 import com.example.demo.model.Empresa;
+import com.example.demo.repo.EnterpriseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class EmpresaService {
     public EmpresaService() {
     }
 
-    public List<Empresa> findAll(){
+    public List<Empresa> findAll() {
         return enterpriseRepository.findAll();
     }
 
