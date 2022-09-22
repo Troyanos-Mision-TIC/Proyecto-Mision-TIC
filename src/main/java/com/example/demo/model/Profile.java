@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @Table(name = "profile")
 public class Profile implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -21,7 +22,8 @@ public class Profile implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "user")
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Empleado user;
 
     @CreatedDate

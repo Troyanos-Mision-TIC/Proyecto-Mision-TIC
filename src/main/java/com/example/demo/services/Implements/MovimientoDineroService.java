@@ -1,7 +1,8 @@
-package com.example.demo.services;
+package com.example.demo.services.Implements;
 
 import com.example.demo.model.MovimientoDinero;
-import com.example.demo.repo.MoneyMovRepository;
+import com.example.demo.repo.ICashMoveRepository;
+import com.example.demo.services.Interfaces.ICashMoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,29 +10,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MovimientoDineroService {
+public class MovimientoDineroService implements ICashMoveService {
 
     @Autowired
-    MoneyMovRepository moneyMovRepository;
+    ICashMoveRepository ICashMoveRepository;
 
     public MovimientoDineroService() {
 
     }
 
     public List<MovimientoDinero> consultarTodosMovimientos() {
-        return moneyMovRepository.findAll();
+        return ICashMoveRepository.findAll();
     }
 
     public Optional<MovimientoDinero> consultarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
-        return moneyMovRepository.findById(idmovimiento);
+        return ICashMoveRepository.findById(idmovimiento);
     }
 
     public MovimientoDinero crearMovimiento(MovimientoDinero Movimiento) {
-        return moneyMovRepository.save(Movimiento);
+        return ICashMoveRepository.save(Movimiento);
     }
 
     public Boolean eliminarMovimiento(int idmovimiento) throws IndexOutOfBoundsException {
-        moneyMovRepository.deleteById(idmovimiento);
+        ICashMoveRepository.deleteById(idmovimiento);
         return true;
     }
 }

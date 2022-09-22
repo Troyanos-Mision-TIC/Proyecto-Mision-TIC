@@ -1,12 +1,13 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -26,19 +27,23 @@ public class Empleado implements Serializable {
     private String correo;
 
     @OneToOne
-    @JoinColumn(name = "profile")
+    @MapsId
+    @JoinColumn(name = "user_id")
     private Profile profile;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private EnumRoleName role;
 
+    @JsonIgnoreProperties(value = {"empleados"})
     @ManyToOne
     @JoinColumn(name = "enterprise")
     private Empresa empresa;
 
+    @JsonIgnoreProperties(value = {"user"})
     @OneToMany
-    @JoinColumn(name = "transations")
-    private List<MovimientoDinero> transations;
+    @JoinColumn(name = "user")
+    private Set<MovimientoDinero> transations;
 
     @CreatedDate
     @Column(name = "createdAt")
@@ -48,9 +53,10 @@ public class Empleado implements Serializable {
     @Column(name = "updatedAt")
     private Date updatedAt;
 
-    public Empleado() {}
+    public Empleado() {
+    }
 
-    public Empleado(Integer id, String correo, Profile profile, EnumRoleName role, Empresa empresa, List<MovimientoDinero> transations, Date createdAt, Date updatedAt) {
+    public Empleado(Integer id, String correo, Profile profile, EnumRoleName role, Empresa empresa, Set<MovimientoDinero> transations, Date createdAt, Date updatedAt) {
         this.id = id;
         this.correo = correo;
         this.profile = profile;
@@ -117,12 +123,20 @@ public class Empleado implements Serializable {
         this.updatedAt = updateAt;
     }
 
-    public List<MovimientoDinero> getTransations() {
+    public Set<MovimientoDinero> getTransations() {
         return transations;
     }
 
-    public void setTransations(List<MovimientoDinero> transations) {
+    public void setTransations(Set<MovimientoDinero> transations) {
         this.transations = transations;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

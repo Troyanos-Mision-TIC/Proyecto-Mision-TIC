@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -20,10 +21,12 @@ public class MovimientoDinero implements Serializable {
     @Column(name = "amount")
     private double monto;
 
+    @JsonIgnoreProperties(value = {"transations"})
     @ManyToOne
     @JoinColumn(name = "user")
     private Empleado user;
 
+    @JsonIgnoreProperties(value = {"transactions"})
     @ManyToOne
     @JoinColumn(name = "enterprise")
     private Empresa empresa;
