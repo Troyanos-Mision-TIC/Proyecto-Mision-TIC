@@ -14,32 +14,32 @@ import java.util.Set;
 @Entity
 @Table(name = "enterprises")
 @EntityListeners(AuditingEntityListener.class)
-public class Empresa implements Serializable {
+public class Enterprise implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "name", unique = true)
-    private String nombre;
+    private String name;
 
     @Column(name = "address")
-    private String direccion;
+    private String address;
 
     @Column(name = "phone")
-    private String telefono;
+    private String phone;
 
     @Column(name = "document", unique = true)
     private String nit;
     
-    @JsonIgnoreProperties(value = "empresa")
+    @JsonIgnoreProperties(value = "enterprise")
     @OneToMany
     @JoinColumn(name = "enterprise")
-    private Set<Empleado> empleados;
+    private Set<Employee> employees;
 
-    @JsonIgnoreProperties(value = "empresa")
+    @JsonIgnoreProperties(value = "enterprise")
     @OneToMany
     @JoinColumn(name = "enterprise")
-    private Set<MovimientoDinero> transacciones;
+    private Set<Transaction> transactions;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -51,37 +51,37 @@ public class Empresa implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date lastModifiedTime;
 
-    public Empresa() {}
+    public Enterprise() {}
 
-    public Empresa(String nombre, String direccion, String telefono, String nit) {
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
+    public Enterprise(String name, String address, String phone, String nit) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
         this.nit = nit;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setPhone(String telefono) {
+        this.phone = telefono;
     }
 
     public String getNit() {
@@ -92,12 +92,12 @@ public class Empresa implements Serializable {
         this.nit = nit;
     }
 
-    public Set<Empleado> getEmpleados() {
-        return empleados;
+    public Set<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setEmpleados(Set<Empleado> empleados) {
-        this.empleados = empleados;
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 
     public long getId() {
@@ -108,12 +108,12 @@ public class Empresa implements Serializable {
         this.id = id;
     }
 
-    public Set<MovimientoDinero> getTransacciones() {
-        return transacciones;
+    public Set<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setTransacciones(Set<MovimientoDinero> transacciones) {
-        this.transacciones = transacciones;
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public Date getCreatedTime() {

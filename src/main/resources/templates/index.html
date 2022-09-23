@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="head">
-    <title>Troyanos</title>
+<head th:fragment="head(title)">
+    <title th:text="${title} ?: 'Sistema de gestión'"></title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}" />
@@ -21,7 +21,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-5 align-items-center">
                     <li class="nav-item">
-                        <a th:href="@{/empresas}" class="btn btn-secondary my-3">
+                        <a th:href="@{/enterprises-list}" class="btn btn-secondary my-3">
                             <i class="fa-solid fa-city"></i> Empresas</a>
                     </li>
                     <li>
@@ -42,7 +42,7 @@
             </div>
             <div class="row vh-100 justify-content-around align-items-center">
                 <div class="col-sm-2">
-                    <a th:href="@{/empresas}" class="btn btn-secondary">
+                    <a th:href="@{/enterprises-list}" class="btn btn-secondary">
                         <img src="/images/empresas.png" width="200" height="200" alt=""> Empresas</a>
                 </div>
                 <div class="col-sm-2">

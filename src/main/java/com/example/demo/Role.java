@@ -2,7 +2,7 @@ package com.example.demo;
 
 public enum Role {
     ADMIN("ADMIN"), 
-    OPERARIO("OPERARIO");
+    OPERATOR("OPERATOR");
 
     private String label;
 

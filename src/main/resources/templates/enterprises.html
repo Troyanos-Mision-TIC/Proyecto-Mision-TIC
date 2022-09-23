@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="index :: head">
-    <title>Empresas</title>
+<head th:replace="index :: head('Empresas')">
 </head>
 <body>
 <section th:replace="agregarEmpresa :: agregarEmpresa"></section>
@@ -14,7 +13,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-5 align-items-center">
                     <li class="nav-item">
-                        <a th:href="@{/empresas}" class="btn btn-secondary my-3">
+                        <a th:href="@{/enterprises-list}" class="btn btn-secondary my-3">
                             <i class="fa-solid fa-city"></i> Empresas</a>
                     </li>
                     <li>
@@ -62,15 +61,14 @@
                                     <tbody>
                                     <tr th:each="empresa, contador : ${empresas}">
                                         <td>[[${contador.count}]]</td>
-                                        <td>[[${empresa.nombre}]]</td>
-                                        <td>[[${empresa.direccion}]]</td>
-                                        <td>[[${empresa.telefono}]]</td>
+                                        <td>[[${empresa.name}]]</td>
+                                        <td>[[${empresa.address}]]</td>
+                                        <td>[[${empresa.phone}]]</td>
                                         <td>[[${empresa.nit}]]</td>
                                         <td>
-                                            <a th:href="@{/eliminarEmpresa(idEmpresa=${empresa.getId()})}"
-                                               class="btn btn-danger btn-sm pt-0 pb-0">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
+                                            <form th:action="@{/delete-enterprise/{id}(id=${empresa.id})}" th:method="delete">
+                                                <button class="fa-solid fa-trash btn btn-danger"/>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>

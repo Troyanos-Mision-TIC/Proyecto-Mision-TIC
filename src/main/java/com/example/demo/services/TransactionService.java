@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.model.Empleado;
-import com.example.demo.model.MovimientoDinero;
+import com.example.demo.model.Employee;
+import com.example.demo.model.Transaction;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -9,40 +9,40 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.example.demo.repositories.TransactionRepository;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 @Service
-public class MovimientoDineroService {
+public class TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final UserRepository userRepository;
+    private final EmployeeRepository userRepository;
 
-    public MovimientoDineroService(TransactionRepository transactionRepository, UserRepository userRepository) {
+    public TransactionService(TransactionRepository transactionRepository, EmployeeRepository userRepository) {
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
     }
 
-    public List<MovimientoDinero> consultarTodosMovimientos() {
+    public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }
-    
-    public Optional<MovimientoDinero> consultarMovimiento(long id) {
+
+    public Optional<Transaction> findById(long id) {
         return transactionRepository.findById(id);
     }
-    
-    public MovimientoDinero guardarMovimiento(MovimientoDinero movimiento){
+
+    public Transaction save(Transaction movimiento) {
         return transactionRepository.save(movimiento);
     }
 
-    public MovimientoDinero editarMovimiento(MovimientoDinero movement, Map<String, Object> fields) {
+    public Transaction editTransaction(Transaction movement, Map<String, Object> fields) {
         fields.forEach((key, value) -> {
-            Field field = ReflectionUtils.findField(MovimientoDinero.class, key);
+            Field field = ReflectionUtils.findField(Transaction.class, key);
             if (field != null) {
                 field.setAccessible(true);
-                if (key.equals("usuarioEncargado")) {
-                    Empleado user = userRepository.findById((long)(int) value).get();
+                if (key.equals("user")) {
+                    Employee user = userRepository.findById((long) (int) value).get();
                     ReflectionUtils.setField(field, movement, user);
                 } else {
                     ReflectionUtils.setField(field, movement, value);
@@ -51,8 +51,8 @@ public class MovimientoDineroService {
         });
         return movement;
     }
-    
-    public void eliminarMovimiento(long id) {
+
+    public void deleteById(long id) {
         transactionRepository.deleteById(id);
     }
 }
