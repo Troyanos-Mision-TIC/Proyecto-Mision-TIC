@@ -42,7 +42,7 @@ public class ControladorUsuario {
                         Optional<Empresa> empresa = empresaService.findById((long)(int) value);
                         empresa.ifPresent(empresa1 -> ReflectionUtils.setField(field, newEmployee, empresa1));
                     } else if (key.equals("rol")) {
-                        Role rol = Role.valueOf((String) value);
+                        Role rol = Role.fromLabel((String) value);
                         ReflectionUtils.setField(field, newEmployee, rol);
                     } else {
                         ReflectionUtils.setField(field, newEmployee, value);
@@ -78,7 +78,7 @@ public class ControladorUsuario {
                         if (empresa.isPresent())
                             ReflectionUtils.setField(field, employee, empresa.get());
                     } else if (key.equals("rol")) {
-                        Role role = Role.valueOf((String) value);
+                        Role role = Role.fromLabel((String) value);
                         ReflectionUtils.setField(field, employee, role);
                     } else {
                         ReflectionUtils.setField(field, employee, value);
