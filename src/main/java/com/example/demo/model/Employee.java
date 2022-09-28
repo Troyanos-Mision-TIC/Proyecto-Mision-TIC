@@ -53,7 +53,7 @@ public class Employee implements Serializable {
     private Date updatedDate;
 
     @OneToOne
-    @JoinColumn(name = "profile_id", updatable = false, nullable = false)
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
     public Employee() {}
@@ -109,13 +109,13 @@ public class Employee implements Serializable {
         return transactions;
     }
 
-    public void setTransactions(Set<Transaction> transactions) {
+    /* public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
-    }
+    } */
 
-    public void setCreatedDate(Date createdDate) {
+    /* public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-    }
+    } */
 
     public Date getCreatedDate() {
         return createdDate;

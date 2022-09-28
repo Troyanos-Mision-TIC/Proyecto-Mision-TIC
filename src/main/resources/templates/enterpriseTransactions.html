@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="applicationMenu :: head('Transacciones')"></head>
+
+<body>
+    <div class="d-flex vh-100">
+        <div th:replace="sideBar :: sideBar"></div>
+        <div class="col">
+            <h2 class="text-center my-5">Sistema de gestion de Ingresos y Gastos</h2>
+            <div class="card m-auto w-75">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Listado de Empresas</h4>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Concepto</th>
+                            <th>Monto</th>
+                            <th>Usuario Encargado</th>
+                            <th>Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="transaction, counter : ${transactions}"
+                            th:class="${transaction.concept == 'Ingreso' ? 'table-success' : 'table-danger'}">
+                            <td>[[${counter.count}]]</td>
+                            <td>[[${transaction.concept}]]</td>
+                            <td>[[${transaction.amount}]]</td>
+                            <td>[[${transaction.user.email}]]</td>
+                            <td>[[${transaction.enterprise.name}]]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="alert w-75 mx-auto mt-3" th:classappend="${transactionsBalance > 0 ? 'alert-success' : 'alert-danger'}">Balance: [[${transactionsBalance}]]</div>
+        </div>
+    </div>
+</body>
+
+</html>

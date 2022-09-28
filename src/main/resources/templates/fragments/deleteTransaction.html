@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div th:fragment="deleteTransaction(transaction)" class="modal fade"
+        th:id="'deleteTransaction' + ${transaction.id}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que quieres eliminar esta transacción?</p>
+                    <p>Esta acción es permanente y <strong>no se puede deshcer</strong>.</p>
+                </div>
+                <div class="modal-footer">
+                    <form
+                        th:action="@{/employee/{employeeId}/transactions/{id}/delete(employeeId=${employeeId}, id=${transaction.id})}"
+                        th:method="delete">
+                        <button class="btn btn-danger">Sí</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

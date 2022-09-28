@@ -19,7 +19,7 @@ public class Enterprise implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Column(name = "address")
@@ -28,7 +28,7 @@ public class Enterprise implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "document", unique = true)
+    @Column(name = "document", unique = true, nullable = false)
     private String nit;
     
     @JsonIgnoreProperties(value = "enterprise")
@@ -96,9 +96,9 @@ public class Enterprise implements Serializable {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
+    /* public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
-    }
+    } */
 
     public long getId() {
         return id;
@@ -112,17 +112,17 @@ public class Enterprise implements Serializable {
         return transactions;
     }
 
-    public void setTransactions(Set<Transaction> transactions) {
+    /* public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
-    }
+    } */
 
     public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
+    // public void setCreatedTime(Date createdTime) {
+    //     this.createdTime = createdTime;
+    // }
 
     public Date getLastModifiedTime() {
         return lastModifiedTime;

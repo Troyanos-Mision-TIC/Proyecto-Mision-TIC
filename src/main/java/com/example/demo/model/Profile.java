@@ -1,21 +1,32 @@
 package com.example.demo.model;
 
+import org.hibernate.annotations.TypeDef;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.example.demo.PsqlEnum;
+import com.example.demo.Role;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "profile")
+@Table(name = "profiles")
 @EntityListeners(AuditingEntityListener.class)
+@TypeDef(name = "pgsql_enum", typeClass = PsqlEnum.class)
 public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "auth0id", nullable = false, unique = true)
+    private String auth0Id;
 
     @Column(name = "image")
     private String image;
@@ -25,6 +36,11 @@ public class Profile implements Serializable {
 
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private Employee user;
+
+    @org.hibernate.annotations.Type(type = "pgsql_enum")
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @CreatedDate
     @Column(name = "createdAt")
@@ -36,20 +52,24 @@ public class Profile implements Serializable {
 
     public Profile() {}
 
-    public Profile(String image, String phone, Employee user, Date createdAt, Date updatedAt) {
+    public Profile(String email, String auth0Id, String image, String phone, Employee user) {
+        this.email = email;
+        this.auth0Id = auth0Id;
         this.image = image;
         this.phone = phone;
         this.user = user;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAuth0Id() {
+        return auth0Id;
     }
 
     public String getImage() {
@@ -76,12 +96,16 @@ public class Profile implements Serializable {
         this.user = user;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Role getRole() {
+        return role;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Date getUpdateAt() {

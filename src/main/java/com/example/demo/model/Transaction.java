@@ -113,9 +113,9 @@ public class Transaction implements Serializable {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    /* public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-    }
+    } */
 
     public Date getUpdatedDate() {
         return updatedDate;

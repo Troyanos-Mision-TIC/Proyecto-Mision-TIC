@@ -7,4 +7,5 @@ import com.example.demo.model.Profile;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
+    Profile findByEmail(String email);
 }

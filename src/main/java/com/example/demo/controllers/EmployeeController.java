@@ -5,10 +5,13 @@ import com.example.demo.model.Employee;
 import com.example.demo.model.Enterprise;
 import com.example.demo.services.EmployeeService;
 import com.example.demo.services.EnterpriseService;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -55,6 +58,32 @@ public class EmployeeController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/enterprise/{id}/employees/create")
+    public RedirectView createEmployee(@PathVariable("id") long enterpriseId, @ModelAttribute Employee object) {
+        Optional<Enterprise> enterprise = enterpriseService.findById(enterpriseId);
+        enterprise.ifPresent(e -> object.setEnterprise(enterprise.get()));
+        employeeService.save(object);
+        return new RedirectView("/enterprise/" + enterpriseId + "/employees");
+    }
+
+    @PostMapping("/enterprise/{enterpriseId}/employees/{id}/delete")
+    public RedirectView deleteEmployee(@PathVariable long enterpriseId, @PathVariable long id) {
+        employeeService.deleteById(id);
+        return new RedirectView("/enterprise/" + enterpriseId + "/employees");
+    }
+
+    @PostMapping("/enterprise/{enterpriseId}/employees/{id}/patch")
+    public RedirectView editEmployee(@PathVariable long enterpriseId, @PathVariable long id, @ModelAttribute Employee newEmployee) {
+        Optional<Employee> employee = employeeService.findById(id);
+        Optional<Enterprise> enterprise = enterpriseService.findById(enterpriseId);
+        newEmployee.setEnterprise(enterprise.get());
+        employee.ifPresent(e -> {
+            BeanUtils.copyProperties(newEmployee, e);
+            employeeService.save(e);
+        });
+        return new RedirectView("/enterprise/" + enterpriseId + "/employees");
     }
 
     @GetMapping("/users/{id}")

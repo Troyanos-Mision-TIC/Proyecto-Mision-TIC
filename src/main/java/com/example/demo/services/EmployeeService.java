@@ -23,6 +23,10 @@ public class EmployeeService {
         return userRepository.findById(id);
     }
 
+    public Employee findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public Optional<Employee> deleteById(long id) {
         Optional<Employee> deletedUser = userRepository.findById(id);
         userRepository.deleteById(id);

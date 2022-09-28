@@ -1,15 +1,17 @@
 package com.example.demo.controllers;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.demo.model.Enterprise;
+import com.example.demo.services.EmployeeService;
 import com.example.demo.services.EnterpriseService;
 
 @RestController
@@ -17,9 +19,11 @@ public class EnterpriseController {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EnterpriseController.class);
 
     private final EnterpriseService enterpriseService;
+    private final EmployeeService employeeService;
 
-    public EnterpriseController(EnterpriseService enterpriseService) {
+    public EnterpriseController(EnterpriseService enterpriseService, EmployeeService employeeService) {
         this.enterpriseService = enterpriseService;
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/enterprises")
@@ -45,17 +49,22 @@ public class EnterpriseController {
         return new RedirectView("/enterprises-list");
     }
 
-    @PatchMapping("/enterprises/{id}")
-    public ResponseEntity<Enterprise> patchEnterprise(@PathVariable("id") long id, @RequestBody Map<String, Object> fields) {
+    @PostMapping("/patch-enterprise/{id}")
+    public RedirectView patchEnterprise(@PathVariable("id") long id, @ModelAttribute Enterprise enterprise) {
         logger.info("Try to edit Enterprise");
         Enterprise emp = enterpriseService.findById(id).get();
-        emp = enterpriseService.editEnterprise(emp, fields);
-        return new ResponseEntity<>(enterpriseService.save(emp), HttpStatus.OK);
+        BeanUtils.copyProperties(enterprise, emp);
+        enterpriseService.save(emp);
+        return new RedirectView("/enterprises-list");
     }
 
     @PostMapping("/delete-enterprise/{id}")
     public RedirectView deleteEnterprise(@PathVariable("id") long id) {
         logger.info("Try to delete Enterprise by Id");
+        Optional<Enterprise> enterpriseDeleted = enterpriseService.findById(id);
+        enterpriseDeleted.ifPresent(e -> {
+            e.getEmployees().forEach(employee -> employeeService.deleteById(employee.getId()));
+        });
         enterpriseService.deleteById(id);
         return new RedirectView("/enterprises-list");
     }

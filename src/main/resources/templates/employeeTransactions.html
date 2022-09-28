@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="applicationMenu :: head('Transacciones')"></head>
+
+<body>
+    <div th:replace="fragments/createTransaction :: createTransaction" th:if="${isUserAdmin}"></div>
+    <div th:each="transaction : ${transactions}" th:if="${isUserAdmin}">
+        <div th:replace="fragments/deleteTransaction :: deleteTransaction(${transaction})"></div>
+        <div th:replace="fragments/editTransaction :: editTransaction(${transaction})"></div>
+    </div>
+    <div class="d-flex vh-100">
+        <div th:replace="sideBar :: sideBar"></div>
+        <div class="col">
+            <h2 class="text-center my-5">Sistema de gestion de Ingresos y Gastos</h2>
+            <div class="card m-auto w-75">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Listado de Transacciones del Empleado</h4>
+                    <a th:if="${isUserAdmin}" href="#" class="btn btn-primary px-5" data-toggle="modal"
+                        data-target="#createTransaction">
+                        <i class="fas fa-plus"></i> Agregar
+                    </a>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Concepto</th>
+                            <th>Monto</th>
+                            <th>Usuario Encargado</th>
+                            <th>Empresa</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="transaction, counter : ${transactions}">
+                            <td>[[${counter.count}]]</td>
+                            <td>[[${transaction.concept}]]</td>
+                            <td>[[${transaction.amount}]]</td>
+                            <td>[[${transaction.user.email}]]</td>
+                            <td>[[${transaction.enterprise.name}]]</td>
+                            <td class="d-flex justify-content-center" style="gap: 10px;">
+                                <div th:if="${isUserAdmin}" class="d-flex align-items-stretch" style="gap: 10px;">
+                                    <button type="button" class="btn btn-danger fa-solid fa-trash"
+                                        th:attr="data-target='#deleteTransaction' + ${transaction.id}"
+                                        data-toggle="modal"></button>
+                                    <button type="button" class="btn btn-primary fa-solid fa-pen-to-square"
+                                        th:attr="data-target='#editTransaction' + ${transaction.id}"
+                                        data-toggle="modal"></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

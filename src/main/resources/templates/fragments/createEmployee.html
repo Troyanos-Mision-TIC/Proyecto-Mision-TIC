@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div th:fragment="createEmployee" class="modal fade" id="createEmployee">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">Agregar Empleado</h5>
+                    <button class="close" data-dismiss="modal">
+                        <span class="text-white">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/enterprise/{id}/employees/create(id=${enterpriseId})}" th:object="${employee}" method="POST" class="was-validated">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Rol</label>
+                            <select name="role" id="role" class="form-control">
+                                <option value="OPERATOR" selected>Operario</option>
+                                <option value="ADMIN">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
