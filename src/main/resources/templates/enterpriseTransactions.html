@@ -28,7 +28,7 @@
                             <td>[[${counter.count}]]</td>
                             <td>[[${transaction.concept}]]</td>
                             <td>[[${transaction.amount}]]</td>
-                            <td>[[${transaction.user.email}]]</td>
+                            <td th:text="${transaction.user} ? ${transaction.user.email} : '─'"></td>
                             <td>[[${transaction.enterprise.name}]]</td>
                         </tr>
                     </tbody>
