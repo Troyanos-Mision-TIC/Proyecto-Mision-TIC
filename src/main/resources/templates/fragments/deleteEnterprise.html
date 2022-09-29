@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+</head>
+
+<body>
+    <div class="modal fade" tabindex="-1" role="dialog" th:id="'deleteEnterprise' + ${empresa.id}"
+        th:fragment="deleteEnterprise(empresa)">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que quieres eliminar esta empresa?</p>
+                    <p>Esta acción eliminará además a todos los empleados y transacciones relacionadas.</p>
+                    <p><strong>Esta acción no se puede deshacer.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{/delete-enterprise/{id}(id=${empresa.id})}" th:method="delete">
+                        <button class="btn btn-danger">Sí</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
