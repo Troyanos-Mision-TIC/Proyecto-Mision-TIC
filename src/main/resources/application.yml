@@ -1,0 +1,18 @@
+auth0:
+  audience: https://troyanos-api/
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth0:
+            client-id: rFjAVD3EnEtGatiuBfdJzxKcmnWNPzrd
+            client-secret: ZTCmXyoIoI263hxv9YGSp7BBSF2LRO6auhvKNy3v5HJ50HjZDkRmOdFJQCEjpISs
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          auth0:
+            # trailing slash is important!
+            issuer-uri: https://dev-asqzvqwg.us.auth0.com/

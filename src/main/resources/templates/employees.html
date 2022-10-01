@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="applicationMenu :: head('Empleados')">
+</head>
+
+<body>
+    <div class="d-flex vh-100">
+        <div th:replace="sideBar :: sideBar"></div>
+        <div class="col">
+            <h2 class="text-center my-5">Sistema de gestion de Ingresos y Gastos</h2>
+            <div class="card m-auto w-75">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Todos los Empleados</h4>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Correo</th>
+                            <th>Empresa</th>
+                            <th>Rol</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="employee, counter : ${employees}">
+                            <td>[[${counter.count}]]</td>
+                            <td>[[${employee.email}]]</td>
+                            <td>[[${employee.enterprise.name}]]</td>
+                            <td th:text="${employee.role.label} == 'OPERATOR' ? 'Operario' : 'Administrador'"></td>
+                            <td class="d-flex justify-content-center" style="gap: 10px;">
+                                <a th:href="@{/employee/{id}/transactions(id=${employee.id})}"
+                                    class="btn btn-secondary">
+                                    <i class="fas fa-money-bill"></i>
+                                    Transacciones
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

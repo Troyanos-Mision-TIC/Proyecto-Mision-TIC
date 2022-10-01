@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:fragment="head(title)">
+    <title th:text="${title} ?: 'Sistema de gestión'"></title>
+    <meta charset="UTF-8" />
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+    <div class="d-flex vh-100">
+        <div th:replace="sideBar :: sideBar"></div>
+        <div class="col">
+            <h2 class="text-center mt-5">Sistema de gestion de Ingresos y Gastos</h2>
+            <div class="row pt-5 justify-content-center align-items-center" style="gap: 50px;">
+                <a th:href="@{/enterprises-list}" class="btn btn-secondary d-flex flex-column">
+                    <img src="/images/empresas.png" width="200" height="200" alt=""> Empresas</a>
+                <a th:href="@{/employees-list}" class="btn btn-secondary d-flex flex-column">
+                    <img src="/images/empleados.png" width="200" height="200" alt=""> Empleados</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
